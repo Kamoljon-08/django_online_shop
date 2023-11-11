@@ -1,0 +1,136 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+    <div class="team">
+        <div style="display: flex; align-items: center; margin-top: 30px;">
+            <div class="col-lg-10 col-md-10 v-center header-search hidden-xs" style="padding: 0;">
+                <form name="selected" method="POST">{% csrf_token %}
+                    <input type="search" class="form-control" style="width: 100%;" placeholder="Searching user...">
+                    <div class="search-panel" style="width: 260px;">
+                        <select id="category" class="dropdown-category" style="margin: 0 10px 0 0; padding: 10px 5px;">
+                            <option value="first_name">First Name</option>
+                            <option value="last_name">Last Name</option>
+                            <option value="username">Username</option>
+                            <option value="email">Email Address</option>
+                            <option value="phone">Phone</option>
+                        </select>
+                    </div>
+                    <span class="input-group-btn">
+                        <button type="submit" class="button_search" type="button"><i
+                                class="ion-ios-search-strong"></i></button>
+                    </span>
+                </form>
+            </div>
+            <div class="col-lg-2 col-md-2 v-center">
+                <a href="{% url 'blog_create' %}">
+                    <button class="btn btn-submit btn-gradient" style="font-size: 20px; height: 62px;">
+                        <i class="fa-solid fa-plus" style="font-size: 20px; margin-right: 10px;"></i>Create Blog
+                    </button>
+                </a>
+            </div>
+        </div>
+        <h1 class="about-title v3 spc text-center">Blogs / {{blogs|length}}</h1>
+        <div class="releases v2" style="padding-top: 0;">
+            <div class="tab-content">
+                <div id="tv2" class="tab-pane fade in active">
+                    <div class="js-multiple-row3">
+                        {% for blog in blogs %}
+                        <div class="product-item">
+                            <div class="pd-bd product-inner">
+                                <div class="product-img">
+                                    <a href="{% url 'blog_detail' blog.pk %}">
+                                        <div class="flex product-img-slide">
+                                            <div class="product-images">
+                                                <div class="main-img js-product-slider">
+                                                    {% for blog_image in blog_images %}
+                                                        {% if blog_image.blog.pk == blog.pk %}
+                                                            {% if blog_image.image.url|slice:"-3:" != "mp4" %}
+                                                            <img src="{{blog_image.image.url}}" alt="photo" height="250px" class="img-reponsive">
+                                                            {% else %}
+                                                            <video controls height="250px">
+                                                                <source src="{{blog_image.image.url}}"  class="img-reponsive" />
+                                                            </video>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="multiple-img-list-ver2 js-click-product">
+                                                {% for blog_image in blog_images %}
+                                                {% if blog_image.blog.pk == blog.pk %}
+                                                <div class="product-col">
+                                                    <div class="imgs">
+                                                        {% if blog_image.image.url|slice:"-3:" != "mp4" %}
+                                                            <img src="{{blog_image.image.url}}" alt="photo" height="50px" width="100px">
+                                                            {% else %}
+                                                            <video controls muted height="50px" width="100px" class="img-reponsive">
+                                                                <source src="{{blog_image.image.url}}" />
+                                                            </video>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </a>
+                                    {% if blog.block %}
+                                    <div class="ribbon-price red"><span>{{blog.block}}</span></div>
+                                    {% else %}
+                                    <div class="ribbon-price" style="background: yellowgreen !important;">
+                                        <span>{{blog.block}}</span></div>
+                                    {% endif %}
+                                </div>
+                                <div class="product-info">
+                                    <div class="color-group"></div>
+                                    <div class="element-list element-list-middle">
+                                        <h3 class="product-title">
+                                            <a href="{% url 'blog_detail' blog.pk %}">
+                                                {{blog.title}}
+                                            </a>
+                                        </h3>
+                                        <p class="product-cate">{{blog.description|safe|slice:":200"}}...</p>
+
+                                        <div class="product-bottom">
+                                            <div class="product-price"></div>
+                                            <a href="{% url 'blog_detail' blog.pk %}" class="btn-icon btn-view">
+                                                <span class="icon-bg icon-view"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="flex" style="gap: 10px;">
+                                        <a href="{% url 'blog_image_create' blog.pk %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 12px;">
+                                                <i class="fa-solid fa-plus"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Img Create
+                                            </button>
+                                        </a>
+                                        <a href="{% url 'blog_update' blog.pk %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-pen-to-square"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Edit
+                                            </button>
+                                        </a>
+                                        <a href="{% url 'blog_delete' blog.pk %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-trash-can"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Delete
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

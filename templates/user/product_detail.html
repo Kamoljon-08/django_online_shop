@@ -1,0 +1,533 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="container container-240">
+    <div class="single-product-detail product-bundle product-aff">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li class="active">Product Detail</li>
+        </ul>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+
+                <div class="flex product-img-slide">
+                    <div class="product-images">
+                        <div class="main-img js-product-slider">
+                            {% for product_image in product_images %}
+                            {% if product_image.product.pk == product.pk %}
+                            {% if product_image.image.url|slice:"-3:" != "mp4" %}
+                            <img src="{{product_image.image.url}}" class="img-reponsive" style="height: 400px;"
+                                alt="photo">
+                            {% else %}
+                            <video controls style="height: 400px;" class="img-reponsive" alt="photo">
+                                <source src="{{product_image.image.url}}" type="video/mp4" />
+                            </video>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="multiple-img-list-ver2 js-click-product">
+                        {% for product_image in product_images %}
+                        {% if product_image.product.pk == product.pk %}
+                        <div class="product-col">
+                            <div class="imgs">
+                                {% if product_image.image.url|slice:"-3:" != "mp4" %}
+                                <img src="{{product_image.image.url}}" alt="photo" height="50px" width="100px">
+                                {% else %}
+                                <video controls muted height="50px" width="100px" class="img-reponsive">
+                                    <source src="{{product_image.image.url}}" />
+                                </video>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="single-flex">
+                    <div class="single-product-info product-info product-grid-v2 s-50">
+                        <p class="product-cate">Audio Speakers</p>
+                        <div class="product-rating">
+                            {% for x in product_stars %}
+                            <a href="{% url 'product_rating_create' pk=product.id count=x.1 %}">
+                                {% if x.0 == 'fill' %}
+                                <i class="fa-solid fa-star" style="color: gold;"></i>
+                                {% else %}
+                                <i class="fa-regular fa-star"></i>
+                                {% endif %}
+                            </a>
+                            {% endfor %}
+                            <div class="number-rating">( {{reviews}} reviews )</div>
+                        </div>
+                        <h3 class="product-title"><a href="#">{{product.title}}</a></h3>
+                        <div class="product-price">
+                            {% if product.discount > 0 %}
+                            <span class="red" product-price="{{product.sale_price}}">$ {{product.sale_price}}</span>
+                            <span class="old">$ {{product.price}}</span>
+                            {% else %}
+                            <span class="red" product-price="{{product.sale_price}}">$ {{product.sale_price}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="availability">
+                            <p class="product-inventory">
+                                <label>Availability : </label>
+                                <span>{{product.quantity}}</span>
+                            </p>
+                        </div>
+                        <div class="product-brand" style="display: flex; align-items: center; gap: 20px;">
+                            <a href="#">
+                                <p>Brand :</p>
+                                <img src="{{product.brand.image.url}}" width="100px" height="100px" alt="">
+                            </a>
+                            <a href="#">
+                                <p>Category :</p>
+                                <img src="{{product.category.image.url}}" width="100px" height="100px" alt="">
+                            </a>
+                        </div>
+                        <div class="product-sku">
+                            <label>SKU : </label>
+                            <span>{{product.sku}}</span>
+                        </div>
+                        <div class="short-desc">
+                            <p class="product-desc">{{product.description|slice:":100"}}...</p>
+                        </div>
+                        <div class="color-group">
+                            <label>Color :</label>
+                            {% for product_color in product_colors %}
+                            <a id="{{product_color.pk}}" class="give_color" style="padding: 0px 10px; border-radius: 50px;">
+                                {{ product_color.color }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <div class="color-group">
+                            <label>Size :</label>
+                            <div id="sizes" style="display: inline-block; gap: 20px; flex-wrap: wrap;">
+                                {% for product_size in product_sizes %}
+                                <a id="{{product_size.pk}}" class="give_color click circle">
+                                    {{ product_size.size }}
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="product-tags">
+                            <label>Tags :</label>
+                            {% for product_tag in product_tags %}
+                            <a href="#">{{ product_tag.title }}</a>
+                            {% endfor %}
+                        </div>
+                        <div class="single-product-button-group">
+                            <div class="e-btn cart-qtt btn-gradient">
+                                <div class="e-quantity">
+                                    <input type="number" step="1" min="1" max="999" name="quantity" value="1"
+                                        title="Qty" class="qty input-text js-number" size="4">
+                                    <div class="tc pa">
+                                        <a class="js-plus quantity-right-plus"><i class="fa fa-caret-up"></i></a>
+                                        <a class="js-minus quantity-left-minus"><i class="fa fa-caret-down"></i></a>
+                                    </div>
+                                </div>
+                                <a href="#" class="btn-add-cart">Add to cart <span
+                                        class="icon-bg icon-cart v2"></span></a>
+                            </div>
+                            {% if product_like %}
+                            <a href="{% url 'product_like_delete' product.pk %}" style="margin: 0 5px;"
+                                class="btn-icon">
+                                <i class="fa-solid fa-heart" style="color: #fa0000; font-size: 20px;"></i>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'product_like_create' product.pk %}" style="margin: 0 5px;"
+                                class="btn-icon">
+                                <i class="icon-bg icon-wishlist"></i>
+                            </a>
+                            {% endif %}
+                            <a href="#" class="e-btn btn-icon">
+                                <span class="icon-bg icon-compare"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="single-product-tab bd-7">
+            <div class="cmt-title text-center abs">
+                <ul class="nav nav-tabs v3 text-center">
+                    <li class="active"><a data-toggle="pill" href="#desc">Description</a></li>
+                    <li><a data-toggle="pill" href="#info">Comments</a></li>
+                    <li><a data-toggle="pill" href="#review">Reviews</a></li>
+                </ul>
+            </div>
+            <div class="tab-content js-tab">
+                <div id="desc" class="tab-pane fade in active">
+                    <div class="entry-content" style="overflow-y: scroll; height: 500px;">
+                        <div class="e-text">
+                            <div class="entry-inside v3">
+                                <div class="row entry-middle">
+                                    <div class="entry-info col-xs-12 col-sm-12 col-md-12">
+                                        <h3>Description:</h3>
+                                        <p>{{product.description}} </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="info" class="tab-pane fade in">
+                    <div class="entry-content" style="overflow-y: scroll; height: 500px;">
+                        <div class="e-text">
+                            <div class="entry-inside v3">
+                                <div class="row entry-middle">
+                                    <div class="entry-info col-xs-12 col-sm-12 col-md-12">
+                                        <div class="blog-comment">
+                                            <div class="cmt-title text-center abs">
+                                                <h1 class="oval-bd">Comments ({{product_comments|length}})</h1>
+                                            </div>
+                                            <ul>
+                                                {% for product_comment in product_comments %}
+                                                <li class="bd-7" style="margin: 10px 0;">
+                                                    <div class="blog-comment-item">
+                                                        <div class="cmt-img">
+                                                            <img src="{{product_comment.by_user.image.url}}"
+                                                                style="max-width: 140px; max-height: 140px; border-radius: 50%;"
+                                                                alt="">
+                                                        </div>
+                                                        <div class="cmt-content">
+                                                            <div class="wrp-name">
+                                                                <div class="wrp-element">
+                                                                    <span
+                                                                        class="name">{{product_comment.by_user.first_name}}
+                                                                        {{product_comment.by_user.last_name}}</span>
+                                                                    <!-- <a href="#"><i class="fa fa-reply"></i></a> -->
+                                                                </div>
+                                                                <span class="date">{{product_comment.created_at}}</span>
+                                                            </div>
+                                                            <p>{{product_comment.message}}</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="blog-comment-bottom">
+                                            <div class="cmt-title text-center abs">
+                                                <h1 class="oval-bd">Leave a comment</h1>
+                                            </div>
+                                            <div class="cmt-form">
+                                                <form class="login-form" action="/product/comment/create/{{product.pk}}"
+                                                    method="post">
+                                                    {% csrf_token %}
+                                                    {% for field in form %}
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                {{field}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% if field.errors %}
+                                                    <small>{{ field.errors|striptags }}</small>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    <div class="form-group text-center">
+                                                        <button type="submit" class="btn btn-submit btn-gradient">
+                                                            Send message
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="review" class="tab-pane fade in ">
+                    <div class="entry-content" style="overflow-y: scroll; height: 500px;">
+                        <div class="e-text">
+                            <div class="entry-inside v3">
+                                <div class="row entry-middle">
+                                    <div class="entry-info col-xs-12 col-sm-12 col-md-12">
+                                        <div class="blog-comment">
+                                            <div class="cmt-title text-center abs">
+                                                <h1 class="oval-bd">Express Interest ({{reviews}})</h1>
+                                            </div>
+                                            <ul>
+                                                {% for i in product_ratings %}
+                                                <li class="bd-7" style="margin: 10px 0;">
+                                                    <div class="blog-comment-item">
+                                                        <div class="cmt-img">
+                                                            <img src="{{i.ratings.by_user.image.url}}"
+                                                                style="max-width: 140px; max-height: 140px; border-radius: 50%;"
+                                                                alt="">
+                                                        </div>
+                                                        <div class="cmt-content">
+                                                            <div class="wrp-name">
+                                                                <div class="wrp-element">
+                                                                    <span class="name">{{i.ratings.by_user.first_name}}
+                                                                        {{i.ratings.by_user.last_name}}</span>
+                                                                    <!-- <a href="#"><i class="fa fa-reply"></i></a> -->
+                                                                </div>
+                                                                <span class="date">{{i.ratings.created_at}}</span>
+                                                            </div>
+                                                            {% for x in i.stars %}
+                                                            <a
+                                                                href="{% url 'product_rating_create' pk=product.id count=x.1 %}">
+                                                                {% if x.0 == 'fill' %}
+                                                                <i class="fa-solid fa-star" style="color: gold;"></i>
+                                                                {% else %}
+                                                                <i class="fa-regular fa-star"></i>
+                                                                {% endif %}
+                                                            </a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+
+                                        <div class="blog-comment-bottom">
+                                            <div class="cmt-title text-center abs">
+                                                <h1 class="oval-bd">Leave a Rating</h1>
+                                            </div>
+                                            <div class="cmt-form leave_rating">
+                                                <p class="rating_ques">
+                                                    How do you rate the product ?
+                                                </p>
+                                                <div class="rating_center">
+                                                    <span>Bad</span>
+                                                    {% for x in product_stars %}
+                                                    <a href="{% url 'product_rating_create' pk=product.id count=x.1 %}">
+                                                        <i class="fa-regular fa-star" style="font-size: 30px;"></i>
+                                                    </a>
+                                                    {% endfor %}
+                                                    <span>Good</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bestseller">
+        <div class="ecome-heading style5v3 spc5v3">
+            <h1>Similar Category</h1>
+            <a href="#" class="btn-show">Shop more<i class="ion-ios-arrow-forward"></i></a>
+        </div>
+        <div class="product-tab-pd owl-carousel owl-theme js-owl-product4">
+            {% for prod in similar_categories %}
+            <div class="product-item">
+                <div class="pd-bd product-inner">
+                    <div class="product-img">
+                        <p class="js-single-post">
+                            {% for image in prod.images %}
+                            {% if image.product.pk == prod.item.pk %}
+                            {% if image.image.url|slice:"-3:" != "mp4" %}
+                            <img src="{{image.image.url}}" width="100%" height="180px" alt="" class="img-reponsive">
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </p>
+                        {% if prod.item.discount > 0 %}
+                        <div class="ribbon-price red">
+                            <span>-{{prod.item.discount}}%</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="product-info">
+                        <div class="element-list element-list-middle">
+                            <div class="bd-rating" style="text-align: center;">
+                                {% for x in prod.stars %}
+                                <a href="{% url 'product_rating_create' pk=prod.item.id count=x.1 %}">
+                                    {% if x.0 == 'fill' %}
+                                    <i class="fa-solid fa-star" style="color: gold;"></i>
+                                    {% else %}
+                                    <i class="fa-regular fa-star"></i>
+                                    {% endif %}
+                                </a>
+                                {% endfor %}
+                                <div class="number-rating" style="text-align: center;">
+                                    ({{prod.reviews}}) reviews</div>
+                            </div>
+                            <p class="product-cate">{{prod.item.category}}</p>
+                            <h3 class="product-title">
+                                <a href="#">
+                                    {% if prod.item.title|length > 35 %}
+                                    {{prod.item.title|slice:":35"}}...
+                                    {% else %}
+                                    {{prod.item.title}}
+                                    {% endif %}
+                                </a>
+                            </h3>
+                            <div class="product-bottom">
+                                <div class="product-price">
+                                    {% if prod.item.discount > 0 %}
+                                    <span class="red">$ {{prod.item.sale_price}}</span>
+                                    <span class="old">$ {{prod.item.price}}</span>
+                                    {% else %}
+                                    <span>$ {{prod.item.price}}</span>
+                                    {% endif %}
+                                </div>
+                                <a href="#" class="btn-icon btn-view">
+                                    <span class="icon-bg icon-view"></span>
+                                </a>
+                            </div>
+                            <div class="product-bottom-group">
+                                <a href="#" class="btn-icon">
+                                    <span class="icon-bg icon-cart"></span>
+                                </a>
+                                {% if prod.likes %}
+                                <a href="{% url 'product_like_delete' prod.item.pk %}" class="btn-icon">
+                                    <i class="fa-solid fa-heart" style="color: #fa0000; font-size: 20px;"></i>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'product_like_create' prod.item.pk %}" class="btn-icon">
+                                    <i class="icon-bg icon-wishlist"></i>
+                                </a>
+                                {% endif %}
+                                <a href="#" class="btn-icon">
+                                    <span class="icon-bg icon-compare"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-button-group">
+                            <a href="#" class="btn-icon">
+                                <span class="icon-bg icon-cart"></span>
+                            </a>
+                            {% if product.likes %}
+                            <a href="{% url 'product_like_delete' prod.item.pk %}" class="btn-icon">
+                                <i class="fa-solid fa-heart" style="color: #fa0000; font-size: 20px;"></i>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'product_like_create' prod.item.pk %}" class="btn-icon">
+                                <i class="icon-bg icon-wishlist"></i>
+                            </a>
+                            {% endif %}
+                            <a href="#" class="btn-icon">
+                                <span class="icon-bg icon-compare"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="bestseller">
+        <div class="ecome-heading style5v3 spc5v3">
+            <h1>Similar Brand</h1>
+            <a href="#" class="btn-show">Shop more<i class="ion-ios-arrow-forward"></i></a>
+        </div>
+        <div class="product-tab-pd owl-carousel owl-theme js-owl-product4">
+            {% for prod in similar_brands %}
+            <div class="product-item">
+                <div class="pd-bd product-inner">
+                    <div class="product-img">
+                        <p class="js-single-post">
+                            {% for image in prod.images %}
+                            {% if image.product.pk == prod.item.pk %}
+                            {% if image.image.url|slice:"-3:" != "mp4" %}
+                            <img src="{{image.image.url}}" width="100%" height="180px" alt="" class="img-reponsive">
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </p>
+                        {% if prod.item.discount > 0 %}
+                        <div class="ribbon-price red">
+                            <span>-{{prod.item.discount}}%</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="product-info">
+                        <div class="element-list element-list-middle">
+                            <div class="bd-rating" style="text-align: center;">
+                                {% for x in prod.stars %}
+                                <a href="{% url 'product_rating_create' pk=prod.item.id count=x.1 %}">
+                                    {% if x.0 == 'fill' %}
+                                    <i class="fa-solid fa-star" style="color: gold;"></i>
+                                    {% else %}
+                                    <i class="fa-regular fa-star"></i>
+                                    {% endif %}
+                                </a>
+                                {% endfor %}
+                                <div class="number-rating" style="text-align: center;">
+                                    ({{prod.reviews}}) reviews</div>
+                            </div>
+                            <p class="product-cate">{{prod.item.brand}}</p>
+                            <h3 class="product-title">
+                                <a href="#">
+                                    {% if prod.item.title|length > 35 %}
+                                    {{prod.item.title|slice:":35"}}...
+                                    {% else %}
+                                    {{prod.item.title}}
+                                    {% endif %}
+                                </a>
+                            </h3>
+                            <div class="product-bottom">
+                                <div class="product-price">
+                                    {% if prod.item.discount > 0 %}
+                                    <span class="red">$ {{prod.item.sale_price}}</span>
+                                    <span class="old">$ {{prod.item.price}}</span>
+                                    {% else %}
+                                    <span>$ {{prod.item.price}}</span>
+                                    {% endif %}
+                                </div>
+                                <a href="#" class="btn-icon btn-view">
+                                    <span class="icon-bg icon-view"></span>
+                                </a>
+                            </div>
+                            <div class="product-bottom-group">
+                                <a href="#" class="btn-icon">
+                                    <span class="icon-bg icon-cart"></span>
+                                </a>
+                                {% if prod.likes %}
+                                <a href="{% url 'product_like_delete' prod.item.pk %}" class="btn-icon">
+                                    <i class="fa-solid fa-heart" style="color: #fa0000; font-size: 20px;"></i>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'product_like_create' prod.item.pk %}" class="btn-icon">
+                                    <i class="icon-bg icon-wishlist"></i>
+                                </a>
+                                {% endif %}
+                                <a href="#" class="btn-icon">
+                                    <span class="icon-bg icon-compare"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-button-group">
+                            <a href="#" class="btn-icon">
+                                <span class="icon-bg icon-cart"></span>
+                            </a>
+                            {% if product.likes %}
+                            <a href="{% url 'product_like_delete' prod.item.pk %}" class="btn-icon">
+                                <i class="fa-solid fa-heart" style="color: #fa0000; font-size: 20px;"></i>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'product_like_create' prod.item.pk %}" class="btn-icon">
+                                <i class="icon-bg icon-wishlist"></i>
+                            </a>
+                            {% endif %}
+                            <a href="#" class="btn-icon">
+                                <span class="icon-bg icon-compare"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

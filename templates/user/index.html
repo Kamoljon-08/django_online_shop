@@ -1,0 +1,742 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="all-s">
+    <div class="ads-group v2 nospc">
+
+        <div class="container container-240">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 set-w "></div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 set-flex ">
+                    <div class="slide-home3">
+                        <div class="e-slide v2 js-slider-3items">
+                            {% for ad in ads %}
+                            <div class="e-slide-img" style="border: 1px solid #eee;">
+                                <a href="{{ad.link}}" target="_blank">
+                                    {% if ad.image.url|slice:"-3:" != "mp4" %}
+                                    <img src="{{ad.image.url}}" alt="ad image" class="response_file">
+                                    {% else %}
+                                    <video controls class="response_file" style="background-size: cover;">
+                                        <source src="{{ad.image.url}}" alt="ad image">
+                                    </video>
+                                    {% endif %}
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Feature -->
+        <div class="feature v2">
+            <div class="container container-240">
+                <div class="feature-inside">
+                    <div class="feature-block v2 text-center">
+                        <div class="feature-block-img"><img src="{% static 'img/feature/g-truck.png' %}" alt=""
+                                class="img-reponsive">
+                        </div>
+                        <div class="feature-info v2">
+                            <h3>Worldwide Delivery</h3>
+                            <p>With sites in 5 languages, we ship to over 200 countries & regions.</p>
+                        </div>
+                    </div>
+                    <div class="feature-block v2 text-center">
+                        <div class="feature-block-img"><img src="{% static 'img/feature/g-credit.png' %}" alt=""
+                                class="img-reponsive">
+                        </div>
+                        <div class="feature-info v2">
+                            <h3>Safe Payment</h3>
+                            <p>Pay with the world’s most popular and secure payment methods.</p>
+                        </div>
+                    </div>
+                    <div class="feature-block v2 text-center">
+                        <div class="feature-block-img"><img src="{% static 'img/feature/g-safety.png' %}" alt=""
+                                class="img-reponsive">
+                        </div>
+                        <div class="feature-info v2">
+                            <h3>Shop with Confidence</h3>
+                            <p>Our Buyer Protection covers your purchase from click to delivery.</p>
+                        </div>
+                    </div>
+                    <div class="feature-block v2 text-center">
+                        <div class="feature-block-img"><img src="{% static 'img/feature/g-tele.png' %}" alt=""
+                                class="img-reponsive">
+                        </div>
+                        <div class="feature-info v2">
+                            <h3>24/7 Help Center</h3>
+                            <p>Round-the-clock assistance for a smooth shopping experience.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Top product -->
+        <div class="top-product-tab">
+            <div class="container container-240">
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="filter filter-product e-category">
+                            <h1 class="widget-blog-title">Top Products</h1>
+                            <div class="owl-carousel owl-theme js-owl-post">
+                                {% for i in top_products %}
+                                <div class="item">
+                                    {% for j in i %}
+                                    <div class="cate-item" style="padding: 30px 25px;">
+                                        <div class="product-img">
+                                            <p class="js-single-post">
+                                                {% for image in j.images %}
+                                                {% if image.image.url|slice:"-3:" != "mp4" %}
+                                                <a href="{% url 'product_detail_user' j.item.pk %}">
+                                                    <img src="{{image.image.url}}" alt="" height="80px" width="80px"
+                                                    class="img-reponsive">
+                                                </a>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                        </div>
+                                        <div class="product-info">
+                                            <h3 class="product-title"><a href="#">{{j.item.title}}</a></h3>
+                                            <div class="product-price v2"><span>$ {{j.item.sale_price}}</span></div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-sm-8 col-xs-12">
+                        <div class="product-tab spc3">
+                            <ul class="product-tab-sw v2">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#feature" aria-expanded="true">
+                                        Old
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a data-toggle="tab" href="#top-rated" aria-expanded="false">
+                                        Top rated
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a data-toggle="tab" href="#most" aria-expanded="false">
+                                        New arrivals
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="feature" class="tab-pane fade in active">
+                                    <div class="product-tab-pd owl-carousel owl-theme js-owl-product2">
+                                        {% for product in old %}
+                                        <div class="product-item">
+                                            <div class="pd-bd product-inner">
+                                                <div class="product-img">
+                                                    <p class="js-single-post">
+                                                        {% for image in product.images %}
+                                                        {% if image.product.pk == product.item.pk %}
+                                                        {% if image.image.url|slice:"-3:" != "mp4" %}
+                                                        <a href="{% url 'product_detail_user' product.item.pk %}">
+                                                            <img src="{{image.image.url}}" height="180px" alt=""
+                                                                class="img-reponsive">
+                                                        </a>
+                                                        {% endif %}
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </p>
+                                                    {% if product.item.discount > 0 %}
+                                                    <div class="ribbon-price red">
+                                                        <span>-{{product.item.discount}}%</span>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="product-info">
+                                                    <div class="element-list element-list-middle">
+                                                        <div class="bd-rating" style="text-align: center;">
+                                                            {% for x in product.stars %}
+                                                            <a
+                                                                href="{% url 'product_rating_create' pk=product.item.id count=x.1 %}">
+                                                                {% if x.0 == 'fill' %}
+                                                                <i class="fa-solid fa-star" style="color: gold;"></i>
+                                                                {% else %}
+                                                                <i class="fa-regular fa-star"></i>
+                                                                {% endif %}
+                                                            </a>
+                                                            {% endfor %}
+                                                            <div class="number-rating" style="text-align: center;">
+                                                                ({{product.reviews}}) reviews</div>
+                                                        </div>
+                                                        <p class="product-cate">{{product.item.category}}</p>
+                                                        <h3 class="product-title">
+                                                            <a href="{% url 'product_detail_user' product.item.pk %}">
+                                                                {{product.item.title}}
+                                                            </a>
+                                                        </h3>
+                                                        <div class="product-bottom">
+                                                            <div class="product-price">
+                                                                {% if product.item.discount > 0 %}
+                                                                <span class="red">$ {{product.item.sale_price}}</span>
+                                                                <span class="old">$ {{product.item.price}}</span>
+                                                                {% else %}
+                                                                <span>$ {{product.item.price}}</span>
+                                                                {% endif %}
+                                                            </div>
+                                                            <a href="#" class="btn-icon btn-view">
+                                                                <span class="icon-bg icon-view"></span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="product-bottom-group">
+                                                            <a href="{% url 'basket_create' product.item.pk %}" class="btn-icon">
+                                                                <span class="icon-bg icon-cart"></span>
+                                                            </a>
+                                                            {% if product.likes %}
+                                                            <a href="{% url 'product_like_delete' product.item.pk %}"
+                                                                class="btn-icon">
+                                                                <i class="fa-solid fa-heart"
+                                                                    style="color: #fa0000; font-size: 20px;"></i>
+                                                            </a>
+                                                            {% else %}
+                                                            <a href="{% url 'product_like_create' product.item.pk %}"
+                                                                class="btn-icon">
+                                                                <i class="icon-bg icon-wishlist"></i>
+                                                            </a>
+                                                            {% endif %}
+                                                            <a href="#" class="btn-icon">
+                                                                <span class="icon-bg icon-compare"></span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-button-group">
+                                                        <a href="{% url 'basket_create' product.item.pk %}" class="btn-icon">
+                                                            <span class="icon-bg icon-cart"></span>
+                                                        </a>
+                                                        {% if product.likes %}
+                                                        <a href="{% url 'product_like_delete' product.item.pk %}"
+                                                            class="btn-icon">
+                                                            <i class="fa-solid fa-heart"
+                                                                style="color: #fa0000; font-size: 20px;"></i>
+                                                        </a>
+                                                        {% else %}
+                                                        <a href="{% url 'product_like_create' product.item.pk %}"
+                                                            class="btn-icon">
+                                                            <i class="icon-bg icon-wishlist"></i>
+                                                        </a>
+                                                        {% endif %}
+                                                        <a href="#" class="btn-icon">
+                                                            <span class="icon-bg icon-compare"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div id="top-rated" class="tab-pane fade">
+                                    <div class="product-tab-pd owl-carousel owl-theme js-owl-product2">
+                                        {% for product in rated %}
+                                        <div class="product-item">
+                                            <div class="pd-bd product-inner">
+                                                <div class="product-img">
+                                                    <p class="js-single-post">
+                                                        {% for image in product.images %}
+                                                        {% if image.product.pk == product.item.pk %}
+                                                        {% if image.image.url|slice:"-3:" != "mp4" %}
+                                                        <a href="{% url 'product_detail_user' product.item.pk %}">
+                                                            <img src="{{image.image.url}}" height="180px" alt=""
+                                                                class="img-reponsive">
+                                                        </a>
+                                                        {% endif %}
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </p>
+                                                    {% if product.item.discount > 0 %}
+                                                    <div class="ribbon-price red">
+                                                        <span>-{{product.item.discount}}%</span>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="product-info">
+                                                    <div class="element-list element-list-middle">
+                                                        <div class="bd-rating" style="text-align: center;">
+                                                            {% for x in product.stars %}
+                                                            <a
+                                                                href="{% url 'product_rating_create' pk=product.item.id count=x.1 %}">
+                                                                {% if x.0 == 'fill' %}
+                                                                <i class="fa-solid fa-star" style="color: gold;"></i>
+                                                                {% else %}
+                                                                <i class="fa-regular fa-star"></i>
+                                                                {% endif %}
+                                                            </a>
+                                                            {% endfor %}
+                                                            <div class="number-rating" style="text-align: center;">
+                                                                ({{product.reviews}}) reviews</div>
+                                                        </div>
+                                                        <p class="product-cate">{{product.item.category}}</p>
+                                                        <h3 class="product-title">
+                                                            <a href="{% url 'product_detail_user' product.item.pk %}">
+                                                                {{product.item.title}}
+                                                            </a>
+                                                        </h3>
+                                                        <div class="product-bottom">
+                                                            <div class="product-price">
+                                                                {% if product.item.discount > 0 %}
+                                                                <span class="red">$ {{product.item.sale_price}}</span>
+                                                                <span class="old">$ {{product.item.price}}</span>
+                                                                {% else %}
+                                                                <span>$ {{product.item.price}}</span>
+                                                                {% endif %}
+                                                            </div>
+                                                            <a href="#" class="btn-icon btn-view">
+                                                                <span class="icon-bg icon-view"></span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="product-bottom-group">
+                                                            <a href="{% url 'basket_create' product.item.pk %}" class="btn-icon">
+                                                                <span class="icon-bg icon-cart"></span>
+                                                            </a>
+                                                            {% if product.likes %}
+                                                            <a href="{% url 'product_like_delete' product.item.pk %}"
+                                                                class="btn-icon">
+                                                                <i class="fa-solid fa-heart"
+                                                                    style="color: #fa0000; font-size: 20px;"></i>
+                                                            </a>
+                                                            {% else %}
+                                                            <a href="{% url 'product_like_create' product.item.pk %}"
+                                                                class="btn-icon">
+                                                                <i class="icon-bg icon-wishlist"></i>
+                                                            </a>
+                                                            {% endif %}
+                                                            <a href="#" class="btn-icon">
+                                                                <span class="icon-bg icon-compare"></span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-button-group">
+                                                        <a href="{% url 'basket_create' product.item.pk %}" class="btn-icon">
+                                                            <span class="icon-bg icon-cart"></span>
+                                                        </a>
+                                                        {% if product.likes %}
+                                                        <a href="{% url 'product_like_delete' product.item.pk %}"
+                                                            class="btn-icon">
+                                                            <i class="fa-solid fa-heart"
+                                                                style="color: #fa0000; font-size: 20px;"></i>
+                                                        </a>
+                                                        {% else %}
+                                                        <a href="{% url 'product_like_create' product.item.pk %}"
+                                                            class="btn-icon">
+                                                            <i class="icon-bg icon-wishlist"></i>
+                                                        </a>
+                                                        {% endif %}
+                                                        <a href="#" class="btn-icon">
+                                                            <span class="icon-bg icon-compare"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div id="most" class="tab-pane fade">
+                                    <div class="product-tab-pd owl-carousel owl-theme js-owl-product2">
+                                        {% for product in new %}
+                                        <div class="product-item">
+                                            <div class="pd-bd product-inner">
+                                                <div class="product-img">
+                                                    <p class="js-single-post">
+                                                        {% for image in product.images %}
+                                                        {% if image.product.pk == product.item.pk %}
+                                                        {% if image.image.url|slice:"-3:" != "mp4" %}
+                                                        <a href="{% url 'product_detail_user' product.item.pk %}">
+                                                            <img src="{{image.image.url}}" height="180px" alt=""
+                                                                class="img-reponsive">
+                                                        </a>
+                                                        {% endif %}
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </p>
+                                                    {% if product.item.discount > 0 %}
+                                                    <div class="ribbon-price red">
+                                                        <span>-{{product.item.discount}}%</span>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="product-info">
+                                                    <div class="element-list element-list-middle">
+                                                        <div class="bd-rating" style="text-align: center;">
+                                                            {% for x in product.stars %}
+                                                            <a href="{% url 'product_rating_create' pk=product.item.id count=x.1 %}">
+                                                                {% if x.0 == 'fill' %}
+                                                                <i class="fa-solid fa-star" style="color: gold;"></i>
+                                                                {% else %}
+                                                                <i class="fa-regular fa-star"></i>
+                                                                {% endif %}
+                                                            </a>
+                                                            {% endfor %}
+                                                            <div class="number-rating" style="text-align: center;">
+                                                                ({{product.reviews}}) reviews</div>
+                                                        </div>
+                                                        <p class="product-cate">{{product.item.category}}</p>
+                                                        <h3 class="product-title">
+                                                            <a href="{% url 'product_detail_user' product.item.pk %}">
+                                                                {{product.item.title}}
+                                                            </a>
+                                                        </h3>
+                                                        <div class="product-bottom">
+                                                            <div class="product-price">
+                                                                {% if product.item.discount > 0 %}
+                                                                <span class="red">$ {{product.item.sale_price}}</span>
+                                                                <span class="old">$ {{product.item.price}}</span>
+                                                                {% else %}
+                                                                <span>$ {{product.item.price}}</span>
+                                                                {% endif %}
+                                                            </div>
+                                                            <a href="#" class="btn-icon btn-view">
+                                                                <span class="icon-bg icon-view"></span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="product-bottom-group">
+                                                            <a href="{% url 'basket_create' product.item.pk %}" class="btn-icon">
+                                                                <span class="icon-bg icon-cart"></span>
+                                                            </a>
+                                                            {% if product.likes %}
+                                                            <a href="{% url 'product_like_delete' product.item.pk %}"
+                                                                class="btn-icon">
+                                                                <i class="fa-solid fa-heart"
+                                                                    style="color: #fa0000; font-size: 20px;"></i>
+                                                            </a>
+                                                            {% else %}
+                                                            <a href="{% url 'product_like_create' product.item.pk %}"
+                                                                class="btn-icon">
+                                                                <i class="icon-bg icon-wishlist"></i>
+                                                            </a>
+                                                            {% endif %}
+                                                            <a href="#" class="btn-icon">
+                                                                <span class="icon-bg icon-compare"></span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-button-group">
+                                                        <a href="{% url 'basket_create' product.item.pk %}" class="btn-icon">
+                                                            <span class="icon-bg icon-cart"></span>
+                                                        </a>
+                                                        {% if product.likes %}
+                                                        <a href="{% url 'product_like_delete' product.item.pk %}"
+                                                            class="btn-icon">
+                                                            <i class="fa-solid fa-heart"
+                                                                style="color: #fa0000; font-size: 20px;"></i>
+                                                        </a>
+                                                        {% else %}
+                                                        <a href="{% url 'product_like_create' product.item.pk %}"
+                                                            class="btn-icon">
+                                                            <i class="icon-bg icon-wishlist"></i>
+                                                        </a>
+                                                        {% endif %}
+                                                        <a href="#" class="btn-icon">
+                                                            <span class="icon-bg icon-compare"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Super Deal -->
+        <div class="super-deal">
+            <div class="container container-240">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="owl-carousel owl-theme owl-cate js-oneitem">
+                            {% for i in super_deals %}
+                            <div class="slick-item">
+                                <div class="sp-item">
+                                    <div class="product-wrapper">
+                                        <div class="flex product-img-slide">
+                                            <div class="product-images v2">
+                                                <div class="main-img v2 js-product-slider">
+                                                    <p class="js-single-post">
+                                                        {% for image in i.images %}
+                                                        {% if image.product.pk == i.item.pk %}
+                                                        {% if image.image.url|slice:"-3:" != "mp4" %}
+                                                        <a href="{% url 'product_detail_user' i.item.pk %}">
+                                                            <img src="{{image.image.url}}" alt="photo" class="img-reponsive" height="400px" width="100%">
+                                                        </a>
+                                                        {% else %}
+                                                        <video controls class="img-reponsive" height="400px" width="100%">
+                                                            <source src="{{image.image.url}}" />
+                                                        </video>
+                                                        {% endif %}
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="multiple-img-list-ver2 v2 js-click-product">
+                                                {% for image in i.images %}
+                                                {% if image.product.pk == i.item.pk %}
+                                                {% if image.image.url|slice:"-3:" != "mp4" %}
+                                                <div class="product-col v2">
+                                                    <div class="img" style="height: 80px; width: 80px;">
+                                                        <img src="{{image.image.url}}" alt="photo" height="100%" width="100%" class="img-reponsive">
+                                                    </div>
+                                                </div>
+                                                {% else %}
+                                                <div class="product-col v2">
+                                                    <div class="img" style="height: 80px; width: 80px;">
+                                                        <video controls class="img-reponsive" height="100%" width="100%">
+                                                            <source src="{{image.image.url}}" alt="photo">
+                                                        </video>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-box">
+                                        <div class="product-item-countd">
+                                            <div class="product-info">
+                                                <div class="product-info-top">
+                                                    <h1 class="deal-title">Super deal</h1>
+                                                    <h3 class="product-title v3">
+                                                        <a href="#">{{i.item.title}}</a>
+                                                    </h3>
+                                                    <div class="product-price thin-price">
+                                                        {% if i.item.discount > 0 %}
+                                                        <span class="red">$ {{i.item.sale_price}}</span>
+                                                        <span class="old">$ {{i.item.price}}</span>
+                                                        {% else %}
+                                                        <span>$ {{i.item.price}}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="bd-rating" style="margin-top: 30px; text-align: left;">
+                                                        {% for x in i.stars %}
+                                                        <a
+                                                            href="{% url 'product_rating_create' pk=i.item.id count=x.1 %}">
+                                                            {% if x.0 == 'fill' %}
+                                                            <i class="fa-solid fa-star" style="color: gold; font-size: 25px;"></i>
+                                                            {% else %}
+                                                            <i class="fa-regular fa-star" style="font-size: 25px;"></i>
+                                                            {% endif %}
+                                                        </a>
+                                                        {% endfor %}
+                                                        <div class="number-rating" style="margin-top: 15px; text-align: left;">
+                                                            ({{i.reviews}}) reviews</div>
+                                                    </div>
+                                                    <div class="deal-progress">
+                                                        <div class="deal-stock">
+                                                            <!-- <span class="stock-sold">19% already claimed</span> -->
+                                                            <span class="stock-available">Available:
+                                                                <strong>{{i.item.quantity}}</strong></span>
+                                                        </div>
+                                                        <!-- <div class="progress">
+                                                            <span class="progress-bar" style="width:27.5956%"></span>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="time-cound">
+                                                    <p>Deal ends in :</p>
+                                                    <div class="countdown countdown-time v2" data-countdown="countdown"
+                                                        data-date="08-31-2018-00-00-00">
+
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-3 col-sm-4 col-xs-12">
+                        <div class="filter filter-product e-category">
+                            <h1 class="widget-blog-title">Staffpick Products</h1>
+                            <div class="cate-item">
+                                <div class="product-img">
+                                    <a href="#"><img src="{% static 'img/product/tplink.jpg' %}" alt=""
+                                            class="img-reponsive"></a>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title"><a href="#">Epson Home Cinema </a></h3>
+                                    <div class="product-price v2"><span>$780.00</span></div>
+                                </div>
+                            </div>
+                            <div class="cate-item">
+                                <div class="product-img">
+                                    <a href="#"><img src="{% static 'img/product/anker.jpg' %}" alt=""
+                                            class="img-reponsive"></a>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title"><a href="#">Epson Home Cinema </a></h3>
+                                    <div class="product-price v2"><span>$780.00</span></div>
+                                </div>
+                            </div>
+                            <div class="cate-item">
+                                <div class="product-img">
+                                    <a href="#"><img src="{% static 'img/product/logitech.jpg' %}" alt=""
+                                            class="img-reponsive"></a>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title"><a href="#">Epson Home Cinema </a></h3>
+                                    <div class="product-price v2"><span>$780.00</span></div>
+                                </div>
+                            </div>
+                            <div class="cate-item">
+                                <div class="product-img">
+                                    <a href="#"><img src="{% static 'img/product/phone5.jpg' %}" alt=""
+                                            class="img-reponsive"></a>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title"><a href="#">Epson Home Cinema </a></h3>
+                                    <div class="product-price v2"><span>$780.00</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="releases v2">
+            <div class="container container-240">
+                <div class="title-icon t-column mg-50">
+                    <div class="t-inside">
+                        <img src="{% static 'img/real.png' %}" alt="">
+                    </div>
+                    <h1>New releases</h1>
+                </div>
+                <ul class="product-tab-sw2">
+                    {% for category in all_categories %}
+                    <li class="category">
+                        <form action="/{{category.title}}" method="`">
+                            <button type="submit">
+                                {{category.title}}
+                            </button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="tab-content">
+                    <div id="tv2" class="tab-pane fade in active">
+                        <div class="js-multiple-row4">
+                            {% for product in products %}
+                            <div class="product-item">
+                                <div class="pd-bd product-inner">
+                                    <div class="product-img">
+                                        <p class="js-single-post" style="margin-bottom: 0;">
+                                            {% for image in product.images %}
+                                            {% if image.product.pk == product.item.pk %}
+                                            {% if image.image.url|slice:"-3:" != "mp4" %}
+                                            <a href="{% url 'product_detail_user' product.item.pk %}">
+                                                <img src="{{image.image.url}}" width="100%" height="180px" alt=""
+                                                class="img-reponsive">
+                                            </a>
+
+                                            {% endif %}
+                                            {% endif %}
+                                            {% endfor %}
+                                        </p>
+                                        {% if product.item.discount > 0 %}
+                                        <div class="ribbon-price red">
+                                            <span>-{{product.item.discount}}%</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="element-list element-list-middle">
+                                            <div class="bd-rating" style="text-align: center;">
+                                                {% for x in product.stars %}
+                                                <a
+                                                    href="{% url 'product_rating_create' pk=product.item.id count=x.1 %}">
+                                                    {% if x.0 == 'fill' %}
+                                                    <i class="fa-solid fa-star" style="color: gold;"></i>
+                                                    {% else %}
+                                                    <i class="fa-regular fa-star"></i>
+                                                    {% endif %}
+                                                </a>
+                                                {% endfor %}
+                                                <div class="number-rating" style="text-align: center;">
+                                                    ({{product.reviews}}) reviews</div>
+                                            </div>
+                                            <p class="product-cate">{{product.item.category}}</p>
+                                            <h3 class="product-title">
+                                                <a href="{% url 'product_detail_user' product.item.pk %}">
+                                                    {{product.item.title}}
+                                                </a>
+                                            </h3>
+                                            <div class="product-bottom">
+                                                <div class="product-price">
+                                                    {% if product.item.discount > 0 %}
+                                                    <span class="red">$ {{product.item.sale_price}}</span>
+                                                    <span class="old">$ {{product.item.price}}</span>
+                                                    {% else %}
+                                                    <span>$ {{product.item.price}}</span>
+                                                    {% endif %}
+                                                </div>
+                                                <a href="#" class="btn-icon btn-view">
+                                                    <span class="icon-bg icon-view"></span>
+                                                </a>
+                                            </div>
+                                            <div class="product-bottom-group">
+                                                <a href="{% url 'basket_create' product.item.pk %}" class="btn-icon">
+                                                    <span class="icon-bg icon-cart"></span>
+                                                </a>
+                                                {% if product.likes %}
+                                                <a href="{% url 'product_like_delete' product.item.pk %}"
+                                                    class="btn-icon">
+                                                    <i class="fa-solid fa-heart"
+                                                        style="color: #fa0000; font-size: 20px;"></i>
+                                                </a>
+                                                {% else %}
+                                                <a href="{% url 'product_like_create' product.item.pk %}"
+                                                    class="btn-icon">
+                                                    <i class="icon-bg icon-wishlist"></i>
+                                                </a>
+                                                {% endif %}
+                                                <a href="#" class="btn-icon">
+                                                    <span class="icon-bg icon-compare"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="product-button-group">
+                                            <a href="{% url 'basket_create' product.item.pk %}" class="btn-icon">
+                                                <span class="icon-bg icon-cart"></span>
+                                            </a>
+                                            {% if product.likes %}
+                                            <a href="{% url 'product_like_delete' product.item.pk %}" class="btn-icon">
+                                                <i class="fa-solid fa-heart"
+                                                    style="color: #fa0000; font-size: 20px;"></i>
+                                            </a>
+                                            {% else %}
+                                            <a href="{% url 'product_like_create' product.item.pk %}" class="btn-icon">
+                                                <i class="icon-bg icon-wishlist"></i>
+                                            </a>
+                                            {% endif %}
+                                            <a href="#" class="btn-icon">
+                                                <span class="icon-bg icon-compare"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

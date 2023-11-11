@@ -1,0 +1,136 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+
+    <div class="checkout">
+        <ul class="breadcrumb v3">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li class="active">Cart</li>
+        </ul>
+        <div class="row">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="shopping-cart bd-7">
+                    <div class="cmt-title text-center abs">
+                        <h1 class="page-title v2">Cart</h1>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table cart-table">
+
+                            <tbody>
+                                {% for i in baskets %}
+                                <tr class="item_cart">
+                                    <td class="product-name flex align-center">
+                                        <a href="{% url 'basket_delete' i.pk %}" class="btn-del"><i
+                                                class="ion-ios-close-empty"></i></a>
+                                        <div class="product-img">
+                                            {% for image in product_images %}
+                                            {% if image.product.pk == i.product.pk %}
+                                            {% if image.image.url|slice:"-3:" != "mp4" %}
+                                            <img src="{{image.image.url}}" alt="" class="img-reponsive">
+                                            {% endif %}
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="#" title="">{{i.product.title}}</a>
+                                        </div>
+                                    </td>
+                                    <td class="bcart-quantity single-product-detail">
+                                        <div class="single-product-info">
+                                            <div class="e-quantity">
+                                                <input type="number" min="1" max="999" name="quantity"
+                                                    value="{{i.count}}" title="Qty" class="qty input-text js-number">
+                                                <div class="tc pa">
+                                                    <a class="js-plus quantity-right-plus"><i
+                                                            class="fa fa-caret-up"></i></a>
+                                                    <a class="js-minus quantity-left-minus"><i
+                                                            class="fa fa-caret-down"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="total-price">
+                                        <div class="color-group">
+                                            {% for j in product_colors %}
+                                            {% if j.product.pk == i.product.pk %}
+                                            <a href="{% url 'basket_update' j.pk %}" id="{{j.pk}}" class="click circle" style="background: {{j.color}}">
+                                            </a>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                    <td class="total-price">
+                                        <div class="color-group">
+                                            <div id="sizes" style="display: inline-block; gap: 20px; flex-wrap: wrap;">
+                                                {% for product_size in product_sizes %}
+                                                {% if product_size.product.pk == i.product.pk %}
+                                                <a href="{% url 'basket_update' product_size.pk %}" id="{{product_size.pk}}" class=" click circle">
+                                                    {{ product_size.size }}
+                                                </a>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="total-price">
+                                        <p class="price">$ {{i.price}}</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-cart-bottom">
+                        <a href="#" class="btn btn-update">Update cart</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="cart-total bd-7">
+                    <div class="cmt-title text-center abs">
+                        <h1 class="page-title v3">Cart totals</h1>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="shop_table">
+                            <tbody>
+                                <tr class="cart-subtotal">
+                                    <th>Subtotal</th>
+                                    <td>$ {{total_price}}</td>
+                                </tr>
+                                <tr class="cart-shipping">
+                                    <th>Shipping</th>
+                                    <td class="td">
+                                        <ul class="shipping">
+                                            <li>
+                                                <input type="radio" name="gender" value="Flat" id="radio1"
+                                                    checked="checked">
+                                                <label for="radio2">Free Shipping</label>
+                                            </li>
+                                        </ul>
+                                        <a href="#" class="calcu">Calculate shipping</a>
+                                    </td>
+                                </tr>
+                                <tr class="order-total">
+                                    <th>Total</th>
+                                    <td>$ {{total_price}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="cart-total-bottom">
+                        <a href="{% url 'checkout' %}" class="btn-gradient btn-checkout">Proceed to checkout</a>
+                    </div>
+                    <div class="sign-in-divider">
+                        <span>or</span>
+                    </div>
+                    <div class="cart-total-bottom pp-checkout">
+                        <a href="#"><img src="{% static 'img/checkoutpp.jpg' %}" alt="" class="img-responsive"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

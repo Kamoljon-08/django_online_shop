@@ -1,0 +1,43 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+    <div class="myaccount">
+        <ul class="breadcrumb v3">
+            <li><a href="{% url 'brand_list' %}">Brand List</a></li>
+            <li class="active">Delete Brand</li>
+        </ul>
+        <div class="row pd">
+            <div class="account-element bd-7" style="margin: 0 auto;">
+                <div class="cmt-title text-center abs">
+                    <h1 class="page-title v1">Delete Brand</h1>
+                </div>
+                <div class="page-content">
+                    <form class="login-form" method="post" action="" style="padding: 0 10px;">{%csrf_token %}
+                        <div class="form-group" style="padding: 0 10px;">
+                            {{form.as_p}}
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem doloremque odio
+                                commodi voluptas qui nulla optio possimus. Veritatis repellendus sapiente officiis dicta
+                                natus accusantium corporis reiciendis asperiores enim nobis dignissimos soluta, iusto
+                                aliquid suscipit rerum est odit sequi? Quam ratione expedita modi, consectetur
+                                laudantium voluptates deserunt tenetur qui laboriosam nulla.
+                            </p>
+                        </div>
+                        <div class="flex" style="gap: 30px;">
+                            <a href="{% url 'brand_list' %}" class="btn btn-submit btn-gradient" style="width: 100%; padding: 0px 36px;">
+                                <i class="fa-solid fa-left-long"></i> Go Back
+                            </a>
+                            <button type="submit" class="btn btn-submit btn-gradient"
+                                style="width: 100%; padding: 0px 36px;">
+                                Delete Brand
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

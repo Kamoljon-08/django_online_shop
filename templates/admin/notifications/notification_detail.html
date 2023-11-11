@@ -1,0 +1,48 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+    <div class="single-product-detail product-bundle product-aff">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'notification_list' %}">Notification List</a></li>
+            <li class="active">Notification Detail</li>
+        </ul>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="flex product-img-slide">
+                    <div class="product-images">
+                        <div class="main-img js-product-slider">
+                            <img src="{{user.image.url}}" alt="photo" class="img-reponsive">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="single-flex">
+                    <div class="single-product-info product-info product-grid-v2 s-50">
+                        <div class="product-price">Created Date: 
+                            <span style="font-size: 18px;">{{user.created_at}}</span>
+                        </div>
+                        <div class="product-price">First Name: 
+                            <span style="font-size: 18px;">{{user.first_name}}</span>
+                        </div>
+                        <div class="product-price">Last Name: 
+                            <span style="font-size: 18px;">{{user.last_name}}</span>
+                        </div>
+                        <div class="product-price">Email: 
+                            <span style="font-size: 18px;">{{user.email}}</span>
+                        </div>
+                        <div class="product-price">Phone: 
+                            <span style="font-size: 18px;">{{user.phone}}</span>
+                        </div>
+                        <div class="availability">
+                            <p class="product-inventory"> <label>Block: </label><span> {{user.block}}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

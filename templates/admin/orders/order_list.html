@@ -1,0 +1,87 @@
+{% extends 'admin/base.html' %}
+{% block title %}
+Order
+{% endblock title %}
+{% block content %}
+<div class="container container-240">
+    <div class="team">
+        <div style="display: flex; align-items: center; margin-top: 30px;">
+            <div class="col-lg-10 col-md-10 v-center header-search hidden-xs" style="padding: 0;">
+                <form name="selected" method="POST">{% csrf_token %}
+                    <input type="search" class="form-control" style="width: 100%;" placeholder="Searching user...">
+                    <div class="search-panel" style="width: 260px;">
+                        <select id="category" class="dropdown-category" style="margin: 0 10px 0 0; padding: 10px 5px;">
+                            <option value="first_name">First Name</option>
+                            <option value="last_name">Last Name</option>
+                            <option value="username">Username</option>
+                            <option value="email">Email Address</option>
+                            <option value="phone">Phone</option>
+                        </select>
+                    </div>
+                    <span class="input-group-btn">
+                        <button type="submit" class="button_search" type="button"><i
+                                class="ion-ios-search-strong"></i></button>
+                    </span>
+                </form>
+            </div>
+            <div class="col-lg-2 col-md-2 v-center">
+                <a href="{% url 'order_create' %}">
+                    <button class="btn btn-submit btn-gradient" style="font-size: 20px; height: 62px;">
+                        <i class="fa-solid fa-plus" style="font-size: 20px; margin-right: 10px;"></i>Order
+                    </button>
+                </a>
+            </div>
+        </div>
+        <h1 class="about-title v3 spc text-center">Orders / {{orders|length}}</h1>
+        <div class="releases v2" style="padding-top: 0;">
+            <div class="tab-content">
+                <div id="tv2" class="tab-pane fade in active">
+                    <div class="js-multiple-row3">
+                        {% for i in orders %}
+                        <div class="product-item" style="padding: 30px;">
+                            <div class="pd-bd product-inner">
+                                <div class="product-info">
+                                    <div class="color-group"></div>
+                                    <div class="element-list element-list-middle">
+                                        <a>{{i.country}}</a>
+                                        <p>{{i.city}}</p>
+                                        <p>{{i.address}}</p>
+                                        <p>{{i.company_name}}</p>
+                                        <p>{{i.postcode}}</p>
+                                        </h3>
+                                        <div class="product-bottom">
+                                            <div class="product-price">
+                                                <span class="red">$ {{i.total_price}}</span>
+                                            </div>
+                                            <a href="#" class="btn-icon btn-view">
+                                                <span class="icon-bg icon-view"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="flex" style="gap: 10px;">
+                                        <a href="#" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-pen-to-square"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Edit
+                                            </button>
+                                        </a>
+                                        <a href="#" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-trash-can"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Delete
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

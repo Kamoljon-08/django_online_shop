@@ -1,0 +1,120 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+    <div class="blog-banner pd-banner v2">
+        <a href="#" class="effect_img2"><img src="img/blog/blog-banner.png" alt="" class="img-reponsive"></a>
+    </div>
+    <div class="blog">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li class="active">Blog</li>
+        </ul>
+        <div class="blog-single-post blog-standar">
+            <div class="row">
+                <div class="blog-content col-md-8 col-xs-12">
+                    {% for blog in blogs %}
+                    <div class="blog-post-item v2">
+                        <div class="blog-img">
+                            <a href="{% url 'detail' blog.pk %}" class="js-single-post">
+                                {% for blog_image in blog_images %}
+                                {% if blog_image.blog.pk == blog.pk %}
+                                {% if blog_image.image.url|slice:"-3:" != "mp4" %}
+                                <img src="{{blog_image.image.url}}" alt="" style="height: 100%; width: 100%;"
+                                    class="response_file">
+                                {% else %}
+                                <video controls muted class="response_file" style="height: 100%; width: 100%;">
+                                    <source src="{{blog_image.image.url}}" />
+                                </video>
+                                {% endif %}
+                                {% endif %}
+                                {% endfor %}
+                            </a>
+                            <div class="blog-post-date e-gradient abs v2">
+                                <span class="b-date">{{blog.created_at|date:"d"}}</span>
+                                <span class="b-month">{{blog.created_at|date:"b"}}</span>
+                            </div>
+                        </div>
+                        <div class="blog-info-bd">
+                            <div class="blog-info">
+                                <h3 class="blog-post-title v2">
+                                    <a href="{% url 'detail' blog.pk %}">{{blog.title}}</a>
+                                </h3>
+                                <div class="blog-post-desc">
+                                    {{blog.description|safe|slice:":500"}}...
+                                    <a href="{% url 'detail' blog.pk %}">Reed More</a>
+                                </div>
+                            </div>
+                            <div class="blog-post-author v2">
+                                <div class="blog-post-tags v2">
+                                    <div class="author">{{blog.created_at}}</div>
+                                </div>
+
+                                <div class="blog-post-comment"><span class="c-black"></span>2</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <ul class="pagination">
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#"><i class="ion-ios-arrow-forward"></i></a></li>
+                    </ul>
+                </div>
+                <div class="blog-sidebar col-md-4 col-xs-12">
+                    <div class="blog-widget blog-widget-popular">
+                        <h1 class="widget-blog-title">Popular post</h1>
+                        <div class="owl-carousel owl-theme js-owl-post">
+                            <div class="item">
+                                {% for top_blog in top_blogs %}
+                                <div class="post-item">
+                                    <div class="post-img">
+                                        <a href="{% url 'detail' top_blog.pk %}" style="width: 85px; height: 85px;"
+                                            class="js-single-post">
+                                            {% for blog_image in blog_images %}
+                                            {% if blog_image.blog.pk == top_blog.pk %}
+                                            {% if blog_image.image.url|slice:"-3:" != "mp4" %}
+                                            <img src="{{blog_image.image.url}}" width="85px" height="85px"
+                                                alt="blog image or video">
+                                            {% else %}
+                                            <video controls muted class="response_file"
+                                                style="height: 85%; width: 85%;">
+                                                <source src="{{blog_image.image.url}}" />
+                                            </video>
+                                            {% endif %}
+                                            {% endif %}
+                                            {% endfor %}
+                                        </a>
+                                    </div>
+                                    <div class="post-info">
+                                        <h3>
+                                            <a
+                                                href="{% url 'detail' top_blog.pk %}">{{top_blog.title|slice:":25"}}...</a>
+                                        </h3>
+                                        <!-- <p>{{top_blog.description|safe|slice:":30"}}...</p> -->
+                                        <p>{{top_blog.created_at|date:"r"|slice:":17"}}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blog-widget blog-widget-newsletter">
+                        <h1 class="widget-blog-title">Newletter</h1>
+                        <div class="newsletter">
+                            <form class="form_newsletter" action="#" method="post">
+                                <input type="email" value="" placeholder="Enter your emaill adress" name="EMAIL"
+                                    id="mail2" class="newsletter-input form-control">
+                                <button id="subscribe2" class="button_mini btn" type="submit">
+
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

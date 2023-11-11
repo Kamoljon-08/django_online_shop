@@ -1,0 +1,104 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="wrappage">
+    <div class="main-content space1">
+        <div class="container container-240">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li class="active">CheckOut</li>
+            </ul>
+            <form name="checkout" action="/order/create/" method="post" class="co">{% csrf_token %}
+                <div class="cart-box-container-ver2">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="co-left bd-7">
+                                <div class="cmt-title text-center abs">
+                                    <h1 class="page-title v1">Billing details</h1>
+                                </div>
+                                <div class="row form-customer">
+                                    {% for field in form %}
+                                    <div class="form-group col-md-12">
+                                        <label for="inputfState" class=" control-label">{{ field.label }}<span
+                                            class="f-red">*</span></label>
+                                            {{field}}
+                                    </div>
+                                    {% if field.errors %}
+                                    <p>{{ field.errors|striptags }}</p>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End contact-form -->
+                        <div class="col-md-4">
+                            <div class="cart-total bd-7">
+                                <div class="cmt-title text-center abs">
+                                    <a href="#">
+                                        <h1 class="page-title v3">Your order</h1>
+                                    </a>
+                                </div>
+                                <div class="table-responsive">
+                                    <div class="co-pd">
+                                        <p class="co-title">
+                                            Product<span>Total</span>
+                                        </p>
+                                        <ul class="co-pd-list">
+                                            {% for i in basket %}
+                                            <li class="clearfix">
+                                                <div class="co-name">
+                                                    {{i.product.title }} x ({{i.count}})
+                                                </div>
+                                                <div class="co-price">
+                                                    $ {{i.price}}
+                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <table class="shop_table">
+                                        <tbody>
+                                            <tr class="cart-subtotal">
+                                                <th>Subtotal</th>
+                                                <td>$ {{total_price}}</td>
+                                            </tr>
+                                            <tr class="cart-shipping v2">
+                                                <th>Shipping</th>
+                                                <td class="td">
+                                                    <ul class="shipping">
+                                                        <li>
+                                                            <input type="radio" name="gender" value="Flat" id="radio1"
+                                                                checked="checked">
+                                                            <label for="radio2">Free Shipping</label>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr class="order-total v2">
+                                                <th>Total</th>
+                                                <td id="id_total_price">$ {{total_price}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label ver2">
+                                        <input type="checkbox" class="form-check-input">
+                                        <span>I've read and accept the <a href="#" class="term">terms & conditions
+                                                *</a></span>
+                                    </label>
+                                </div>
+                                <div class="cart-total-bottom v2">
+                                    <button type="submit" class="btn-gradient btn-checkout btn-co-order">Place order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

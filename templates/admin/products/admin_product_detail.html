@@ -1,0 +1,787 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+    <div class="single-product-detail product-bundle product-aff">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'product_list' %}">Product List</a></li>
+            <li class="active">Detail Product ({{product.pk}})</li>
+        </ul>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="flex product-img-slide">
+                    <div class="product-images">
+                        <div class="main-img js-product-slider">
+                            {% for product_image in product_images %}
+                            {% if product_image.product.pk == product.pk %}
+                            {% if product_image.image.url|slice:"-3:" != "mp4" %}
+                            <img src="{{product_image.image.url}}" style="height: 400px;" alt="photo"
+                                class="img-reponsive">
+                            {% else %}
+                            <video controls height="400px" class="img-reponsive">
+                                <source src="{{product_image.image.url}}" type="video/mp4" />
+                            </video>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="multiple-img-list-ver2 js-click-product">
+                        {% for product_image in product_images %}
+                        {% if product_image.product.pk == product.pk %}
+                        <div class="product-col">
+                            <div class="imgs">
+                                {% if product_image.image.url|slice:"-3:" != "mp4" %}
+                                <img src="{{product_image.image.url}}" alt="photo" height="50px" width="100px">
+                                {% else %}
+                                <video controls muted height="50px" width="100px" class="img-reponsive">
+                                    <source src="{{product_image.image.url}}" />
+                                </video>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="single-flex">
+                    <div class="single-product-info product-info product-grid-v2 s-50">
+                        <p class="product-cate">Audio Speakers</p>
+                        <div class="product-rating">
+                            {% for x in product_stars %}
+                            <a href="{% url 'product_rating_create' pk=product.id count=x.1 %}">
+                                {% if x.0 == 'fill' %}
+                                <i class="fa-solid fa-star" style="color: gold;"></i>
+                                {% else %}
+                                <i class="fa-regular fa-star"></i>
+                                {% endif %}
+                            </a>
+                            {% endfor %}
+                            <div class="number-rating">( {{reviews}} reviews )</div>
+                        </div>
+
+                        <h3 class="product-title">
+                            <label>Created_at :</label>
+                            <span>{{product.created_at}}</span>
+                        </h3>
+                        <h3 class="product-title">
+                            <a href="#">{{product.title}}</a>
+                        </h3>
+                        <div class="product-price">
+                            {% if product.discount > 0 %}
+                            <span class="red" product-price="{{product.sale_price}}">$ {{product.sale_price}}</span>
+                            <span class="old">$ {{product.price}}</span>
+                            {% else %}
+                            <span class="red" product-price="{{product.sale_price}}">$ {{product.sale_price}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="availability">
+                            <p class="product-inventory">
+                                <label>Availability:</label>
+                                <span>{{product.quantity}}</span>
+                            </p>
+                        </div>
+                        <div class="product-brand" style="display: flex; align-items: center; gap: 20px;">
+                            <a href="{% url 'brand_detail' product.brand.pk %}">
+                                <p>Brand :</p>
+                                <img src="{{product.brand.image.url}}" width="100px" height="100px" alt="">
+                            </a>
+                            <a href="{% url 'category_detail' product.category.pk %}">
+                                <p>Category :</p>
+                                <img src="{{product.category.image.url}}" width="100px" height="100px" alt="">
+                            </a>
+                        </div>
+                        <div class="product-sku">
+                            <label>SKU :</label><span> {{product.sku}}</span>
+                        </div>
+                        <div class="short-desc">
+                            <label>Description :</label>
+                            <span class="product-desc">{{product.description}}</span>
+                        </div>
+                        <div class="short-desc">
+                            <label>Width :</label>
+                            <span>{{product.width}} cm</span>
+                        </div>
+                        <div class="short-desc">
+                            <label>Height :</label>
+                            <span>{{product.height}} cm</span>
+                        </div>
+                        <div class="short-desc">
+                            <label>Depth :</label>
+                            <span>{{product.depth}} cm</span>
+                        </div>
+
+                        <div class="availability">
+                            <p class="product-inventory"> <label>Block: </label><span> {{product.block}}</span></p>
+                        </div>
+                        <div class="availability">
+                            <p class="product-inventory"> <label>Super Product: </label><span>
+                                    {{product.super_product}}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="team">
+            <div style="display: flex; align-items: center; margin-top: 30px;">
+                <div class="col-lg-10 col-md-10 v-center header-search hidden-xs" style="padding: 0;">
+                    <form name="selected" method="POST">{% csrf_token %}
+                        <input type="search" class="form-control" style="width: 100%;" placeholder="Searching user...">
+                        <div class="search-panel" style="width: 260px;">
+                            <select id="category" class="dropdown-category"
+                                style="margin: 0 10px 0 0; padding: 10px 5px;">
+                                <option value="first_name">First Name</option>
+                                <option value="last_name">Last Name</option>
+                                <option value="username">Username</option>
+                                <option value="email">Email Address</option>
+                                <option value="phone">Phone</option>
+                            </select>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" class="button_search" type="button"><i
+                                    class="ion-ios-search-strong"></i></button>
+                        </span>
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-2 v-center">
+                    <a href="{% url 'product_image_create' product.pk %}">
+                        <button class="btn btn-submit btn-gradient" style="font-size: 20px; height: 62px;">
+                            <i class="fa-solid fa-plus" style="font-size: 20px; margin-right: 10px;"></i>Create
+                            Product's File
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <h1 class="about-title v3 spc text-center">Product's Images ({{product_images|length}}) </h1>
+            <div class="releases v2" style="padding-top: 0;">
+                <div class="tab-content">
+                    <div id="tv2" class="tab-pane fade in active">
+                        <div class="js-multiple-row3">
+                            {% for product_image in product_images %}
+                            {% if product_image.product.pk == product.pk %}
+                            <div class="product-item">
+                                <div class="pd-bd product-inner">
+                                    <div class="product-img">
+                                        <a href="#">
+                                            {% if product_image.image.url|slice:"-3:" != "mp4" %}
+                                            <img src="{{product_image.image.url}}" alt="photo" width="100%"
+                                                height="250px" class="img-reponsive">
+                                            {% else %}
+                                            <video controls muted height="250px" width="100%" class="img-reponsive">
+                                                <source src="{{product_image.image.url}}" />
+                                            </video>
+                                            {% endif %}
+                                        </a>
+                                        {% if product_image.block %}
+                                        <div class="ribbon-price red"><span>{{product_image.block}}</span></div>
+                                        {% else %}
+                                        <div class="ribbon-price" style="background: yellowgreen !important;">
+                                            <span>{{product_image.block}}</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="color-group"></div>
+                                        <div class="element-list element-list-middle">
+                                            <p class="product-cate">Product Image ID: {{product_image.pk}}</p>
+                                            <p class="product-cate">Created At: {{product_image.created_at}}</p>
+                                            <h3 class="product-title">
+                                                <a href="#">
+                                                    Sequence Number: {{product_image.sequence_number}}
+                                                </a>
+                                            </h3>
+                                            <div class="product-bottom">
+                                                <div class="product-price">
+                                                    <span>
+                                                        <a href="{% url 'user_detail' product_image.by_user %}">
+                                                            Author ID: {{product_image.by_user}}
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                                <a href="#" class="btn-icon btn-view">
+                                                    <span class="icon-bg icon-view"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex" style="gap: 10px;">
+                                            <a href="{% url 'product_image_update' product_image.pk %}"
+                                                style="width: 100%;">
+                                                <button class="btn btn-submit btn-gradient"
+                                                    style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                    <i class="fa-solid fa-pen-to-square"
+                                                        style="font-size: 14px; margin-right: 10px;"></i>Edit
+                                                </button>
+                                            </a>
+
+                                            <a href="{% url 'product_image_delete' product_image.pk %}"
+                                                style="width: 100%;">
+                                                <button class="btn btn-submit btn-gradient"
+                                                    style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                    <i class="fa-solid fa-trash-can"
+                                                        style="font-size: 14px; margin-right: 10px;"></i>Delete
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="team">
+            <div style="display: flex; align-items: center; margin-top: 30px;">
+                <div class="col-lg-10 col-md-10 v-center header-search hidden-xs" style="padding: 0;">
+                    <form name="selected" method="POST">{% csrf_token %}
+                        <input type="search" class="form-control" style="width: 100%;" placeholder="Searching user...">
+                        <div class="search-panel" style="width: 260px;">
+                            <select id="category" class="dropdown-category"
+                                style="margin: 0 10px 0 0; padding: 10px 5px;">
+                                <option value="first_name">First Name</option>
+                                <option value="last_name">Last Name</option>
+                                <option value="username">Username</option>
+                                <option value="email">Email Address</option>
+                                <option value="phone">Phone</option>
+                            </select>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" class="button_search" type="button"><i
+                                    class="ion-ios-search-strong"></i></button>
+                        </span>
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-2 v-center">
+                    <a href="{% url 'product_color_create' product.pk %}">
+                        <button class="btn btn-submit btn-gradient" style="font-size: 20px; height: 62px;">
+                            <i class="fa-solid fa-plus" style="font-size: 20px; margin-right: 10px;"></i>Create
+                            Product's Color
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <h1 class="about-title v3 spc text-center">Product's Colors ({{product_colors|length}}) </h1>
+            <div class="releases v2" style="padding-top: 0;">
+                <div class="tab-content">
+                    <div id="tv2" class="tab-pane fade in active">
+                        <div class="js-multiple-row3">
+                            {% for product_color in product_colors %}
+                            {% if product_color.product.pk == product.pk %}
+                            <div class="product-item">
+                                <div class="pd-bd product-inner">
+                                    <div class="product-img">
+                                        {% if product_color.block %}
+                                        <div class="ribbon-price red"><span>{{product_color.block}}</span></div>
+                                        {% else %}
+                                        <div class="ribbon-price" style="background: yellowgreen !important;">
+                                            <span>{{product_color.block}}</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="color-group"></div>
+                                        <div class="element-list element-list-middle">
+                                            <p class="product-cate">Product Color ID: {{product_color.pk}}</p>
+                                            <p class="product-cate">Created At: {{product_color.created_at}}</p>
+                                            <h3 class="product-title">
+                                                <a href="#">
+                                                    Sequence Number: {{product_color.sequence_number}}
+                                                </a>
+                                            </h3>
+                                            <h3 class="product-title" style="font-size: 17px;">
+                                                <a href="#" style="display: flex; align-items: center; gap: 10px;">
+                                                    Color: <div class="give_color"
+                                                        style="padding: 0px 10px; border-radius: 50px;">
+                                                        {{product_color.color}}</div>
+                                                </a>
+                                            </h3>
+                                            <div class="product-bottom">
+                                                <div class="product-price">
+                                                    <span>
+                                                        <a href="{% url 'user_detail' product_color.by_user %}">
+                                                            Author ID: {{product_color.by_user}}
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                                <a href="#" class="btn-icon btn-view">
+                                                    <span class="icon-bg icon-view"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex" style="gap: 10px;">
+                                            <a href="{% url 'product_color_update' product_color.pk %}"
+                                                style="width: 100%;">
+                                                <button class="btn btn-submit btn-gradient"
+                                                    style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                    <i class="fa-solid fa-pen-to-square"
+                                                        style="font-size: 14px; margin-right: 10px;"></i>Edit
+                                                </button>
+                                            </a>
+
+                                            <a href="{% url 'product_color_delete' product_color.pk %}"
+                                                style="width: 100%;">
+                                                <button class="btn btn-submit btn-gradient"
+                                                    style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                    <i class="fa-solid fa-trash-can"
+                                                        style="font-size: 14px; margin-right: 10px;"></i>Delete
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="team">
+            <div style="display: flex; align-items: center; margin-top: 30px;">
+                <div class="col-lg-10 col-md-10 v-center header-search hidden-xs" style="padding: 0;">
+                    <form name="selected" method="POST">{% csrf_token %}
+                        <input type="search" class="form-control" style="width: 100%;" placeholder="Searching user...">
+                        <div class="search-panel" style="width: 260px;">
+                            <select id="category" class="dropdown-category"
+                                style="margin: 0 10px 0 0; padding: 10px 5px;">
+                                <option value="first_name">First Name</option>
+                                <option value="last_name">Last Name</option>
+                                <option value="username">Username</option>
+                                <option value="email">Email Address</option>
+                                <option value="phone">Phone</option>
+                            </select>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" class="button_search" type="button"><i
+                                    class="ion-ios-search-strong"></i></button>
+                        </span>
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-2 v-center">
+                    <a href="{% url 'product_size_create' product.pk %}">
+                        <button class="btn btn-submit btn-gradient" style="font-size: 20px; height: 62px;">
+                            <i class="fa-solid fa-plus" style="font-size: 20px; margin-right: 10px;"></i>Create
+                            Product's Size
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <h1 class="about-title v3 spc text-center">Product's Sizes ({{product_sizes|length}}) </h1>
+            <div class="releases v2" style="padding-top: 0;">
+                <div class="tab-content">
+                    <div id="tv2" class="tab-pane fade in active">
+                        <div class="js-multiple-row3">
+                            {% for product_size in product_sizes %}
+                            {% if product_size.product.pk == product.pk %}
+                            <div class="product-item">
+                                <div class="pd-bd product-inner">
+                                    <div class="product-img">
+                                        {% if product_size.block %}
+                                        <div class="ribbon-price red"><span>{{product_size.block}}</span></div>
+                                        {% else %}
+                                        <div class="ribbon-price" style="background: yellowgreen !important;">
+                                            <span>{{product_size.block}}</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="color-group"></div>
+                                        <div class="element-list element-list-middle">
+                                            <p class="product-cate">Product Size ID: {{product_size.pk}}</p>
+                                            <p class="product-cate">Created At: {{product_size.created_at}}</p>
+                                            <h3 class="product-title">
+                                                <a href="#">
+                                                    Sequence Number: {{product_size.sequence_number}}
+                                                </a>
+                                            </h3>
+                                            <h3 class="product-title" style="font-size: 17px;">
+                                                <a href="#" style="display: flex; align-items: center; gap: 10px;">
+                                                    Color: <div class="give_color click circle"
+                                                        style="padding: 0px 10px; border-radius: 50px;">
+                                                        {{product_size.color}}</div>
+                                                </a>
+                                            </h3>
+                                            <h3 class="product-title" style="font-size: 17px;">
+                                                <a href="#" style="display: flex; align-items: center; gap: 20px;">
+                                                    Size: <p>{{product_size.size}}</p>
+                                                </a>
+                                            </h3>
+                                            <div class="product-price">
+                                                <label>Price: </label>
+                                                {% if product_size.add_or_subtract_price > 0 %}
+                                                <span>$ + {{product_size.add_or_subtract_price}} </span>
+                                                {% else %}
+                                                <span>$ {{product_size.add_or_subtract_price}} </span>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="product-price">
+                                                <label>Quantity: </label>
+                                                <span>{{product_size.quantity}} </span>
+
+                                            </div>
+
+                                            <div class="product-bottom">
+                                                <div class="product-price">
+                                                    <span>
+                                                        <a href="{% url 'user_detail' product_size.by_user %}">
+                                                            Author ID: {{product_size.by_user}}
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                                <a href="#" class="btn-icon btn-view">
+                                                    <span class="icon-bg icon-view"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex" style="gap: 10px;">
+                                            <a href="{% url 'product_size_update' product_size.pk %}"
+                                                style="width: 100%;">
+                                                <button class="btn btn-submit btn-gradient"
+                                                    style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                    <i class="fa-solid fa-pen-to-square"
+                                                        style="font-size: 14px; margin-right: 10px;"></i>Edit
+                                                </button>
+                                            </a>
+
+                                            <a href="{% url 'product_size_delete' product_size.pk %}"
+                                                style="width: 100%;">
+                                                <button class="btn btn-submit btn-gradient"
+                                                    style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                    <i class="fa-solid fa-trash-can"
+                                                        style="font-size: 14px; margin-right: 10px;"></i>Delete
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="team">
+            <div style="display: flex; align-items: center; margin-top: 30px;">
+                <div class="col-lg-10 col-md-10 v-center header-search hidden-xs" style="padding: 0;">
+                    <form name="selected" method="POST">{% csrf_token %}
+                        <input type="search" class="form-control" style="width: 100%;" placeholder="Searching user...">
+                        <div class="search-panel" style="width: 260px;">
+                            <select id="category" class="dropdown-category"
+                                style="margin: 0 10px 0 0; padding: 10px 5px;">
+                                <option value="first_name">First Name</option>
+                                <option value="last_name">Last Name</option>
+                                <option value="username">Username</option>
+                                <option value="email">Email Address</option>
+                                <option value="phone">Phone</option>
+                            </select>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" class="button_search" type="button"><i
+                                    class="ion-ios-search-strong"></i></button>
+                        </span>
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-2 v-center">
+                    <a href="{% url 'product_tag_create' product.pk %}">
+                        <button class="btn btn-submit btn-gradient" style="font-size: 20px; height: 62px;">
+                            <i class="fa-solid fa-plus" style="font-size: 20px; margin-right: 10px;"></i>Create
+                            Product's Tag
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <h1 class="about-title v3 spc text-center">Product's Tags ({{product_tags|length}}) </h1>
+            <div class="releases v2" style="padding-top: 0;">
+                <div class="tab-content">
+                    <div id="tv2" class="tab-pane fade in active">
+                        <div class="js-multiple-row3">
+                            {% for product_tag in product_tags %}
+                            {% if product_tag.product.pk == product.pk %}
+                            <div class="product-item">
+                                <div class="pd-bd product-inner">
+                                    <div class="product-img">
+                                        {% if product_tag.block %}
+                                        <div class="ribbon-price red"><span>{{product_tag.block}}</span></div>
+                                        {% else %}
+                                        <div class="ribbon-price" style="background: yellowgreen !important;">
+                                            <span>{{product_tag.block}}</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="color-group"></div>
+                                        <div class="element-list element-list-middle">
+                                            <p class="product-cate">Product Image ID: {{product_tag.pk}}</p>
+                                            <p class="product-cate">Created At: {{product_tag.created_at}}</p>
+                                            <h3 class="product-title">
+                                                <a href="#">
+                                                    Sequence Number: {{product_tag.sequence_number}}
+                                                </a>
+                                            </h3>
+                                            <h3 class="product-title" style="font-size: 17px;">
+                                                <a href="#">
+                                                    Tag Title: {{product_tag.title}}
+                                                </a>
+                                            </h3>
+                                            <div class="product-bottom">
+                                                <div class="product-price">
+                                                    <span>
+                                                        <a href="{% url 'user_detail' product_tag.by_user %}">
+                                                            Author ID: {{product_tag.by_user}}
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                                <a href="#" class="btn-icon btn-view">
+                                                    <span class="icon-bg icon-view"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex" style="gap: 10px;">
+                                            <a href="{% url 'product_tag_update' product_tag.pk %}"
+                                                style="width: 100%;">
+                                                <button class="btn btn-submit btn-gradient"
+                                                    style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                    <i class="fa-solid fa-pen-to-square"
+                                                        style="font-size: 14px; margin-right: 10px;"></i>Edit
+                                                </button>
+                                            </a>
+
+                                            <a href="{% url 'product_tag_delete' product_tag.pk %}"
+                                                style="width: 100%;">
+                                                <button class="btn btn-submit btn-gradient"
+                                                    style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                    <i class="fa-solid fa-trash-can"
+                                                        style="font-size: 14px; margin-right: 10px;"></i>Delete
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="team">
+            <div style="display: flex; align-items: center; margin-top: 30px;">
+                <div class="col-lg-12 col-md-12 v-center header-search hidden-xs" style="padding: 0;">
+                    <form name="selected" method="POST">{% csrf_token %}
+                        <input type="search" class="form-control" style="width: 100%;" placeholder="Searching user...">
+                        <div class="search-panel" style="width: 260px;">
+                            <select id="category" class="dropdown-category"
+                                style="margin: 0 10px 0 0; padding: 10px 5px;">
+                                <option value="first_name">First Name</option>
+                                <option value="last_name">Last Name</option>
+                                <option value="username">Username</option>
+                                <option value="email">Email Address</option>
+                                <option value="phone">Phone</option>
+                            </select>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" class="button_search" type="button"><i
+                                    class="ion-ios-search-strong"></i></button>
+                        </span>
+                    </form>
+                </div>
+            </div>
+            <h1 class="about-title v3 spc text-center">Product's Comments ({{product_comments|length}}) </h1>
+            <div class="releases v2" style="padding-top: 0;">
+                <div class="tab-content">
+                    <div id="tv2" class="tab-pane fade in active">
+                        <div class="js-multiple-row3">
+                            {% for product_comment in product_comments %}
+                            {% if product_comment.product.pk == product.pk %}
+                            <div class="product-item">
+                                <div class="pd-bd product-inner ">
+                                    <div class="product-img col-md-3 col-xs-12">
+                                        <a href="#">
+                                            <img src="{{product_comment.by_user.image.url}}" alt="photo" width="100px"
+                                                height="100px" class="img-reponsive">
+                                        </a>
+                                        {% if product_comment.block %}
+                                        <div class="ribbon-price red"><span>{{product_comment.block}}</span></div>
+                                        {% else %}
+                                        <div class="ribbon-price" style="background: yellowgreen !important;">
+                                            <span>{{product_comment.block}}</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-info ">
+                                        <div class="color-group"></div>
+                                        <div class="element-list element-list-middle">
+                                            <p class="product-cate">Product Comment ID: {{product_comment.product.pk}}
+                                            </p>
+                                            <p class="product-cate">
+                                                <a href="{% url 'user_detail' product_comment.by_user %}"
+                                                    class="product-cate">
+                                                    Author ID: {{product_comment.by_user.first_name}}
+                                                    {{product_comment.by_user.last_name}}
+                                                </a>
+                                            </p>
+                                            <p class="product-cate">Created At: {{product_comment.created_at}}</p>
+
+                                            <div class="flex" style="gap: 10px;">
+                                                <a href="{% url 'product_comment_update' product_comment.pk %}"
+                                                    style="width: 100%;">
+                                                    <button class="btn btn-submit btn-gradient"
+                                                        style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                        <i class="fa-solid fa-pen-to-square"
+                                                            style="font-size: 14px; margin-right: 10px;"></i>Edit
+                                                    </button>
+                                                </a>
+
+                                                <a href="{% url 'product_comment_delete' product_comment.pk %}"
+                                                    style="width: 100%;">
+                                                    <button class="btn btn-submit btn-gradient"
+                                                        style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                        <i class="fa-solid fa-trash-can"
+                                                            style="font-size: 14px; margin-right: 10px;"></i>Delete
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-bottom">
+                                        <div class="product-price">
+                                            Message:<span class="product-cate"> {{product_comment.message}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-comment-bottom">
+                <div class="cmt-title text-center abs">
+                    <h1 class="oval-bd">Leave a comment</h1>
+                </div>
+                <div class="cmt-form">
+                    <form class="login-form" action="/product/comment/create/{{product.pk}}" method="post">
+                        {%csrf_token%}
+
+                        {% for field in form %}
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{field}}
+                                </div>
+                            </div>
+                        </div>
+                        {% if field.errors %}
+                        <small>{{ field.errors|striptags }}</small>
+                        {% endif %}
+                        {% endfor %}
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-submit btn-gradient">
+                                Send message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bestseller">
+        <div class="ecome-heading style5v3 spc5v3">
+            <h1>Related products</h1>
+            <a href="#" class="btn-show">Shop more<i class="ion-ios-arrow-forward"></i></a>
+        </div>
+        <div class="owl-carousel owl-theme owl-cate v2 js-owl-cate">
+            <div class="product-item">
+                <div class="pd-bd product-inner">
+                    <div class="product-img">
+                        <a href="#"><img src="{% static 'img/product/sound.jpg' %}" alt="" class="img-reponsive"></a>
+                    </div>
+                    <div class="product-info">
+                        <div class="color-group">
+                        </div>
+                        <div class="element-list element-list-left">
+                        </div>
+                        <div class="element-list element-list-middle">
+                            <p class="product-cate">Audio Speakers</p>
+                            <h3 class="product-title"><a href="#">Cordless TrackMan Wheel</a></h3>
+                            <div class="product-bottom">
+                                <div class="product-price"><span>$1,215.00</span></div>
+                                <a href="#" class="btn-icon btn-view">
+                                    <span class="icon-bg icon-view"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-button-group">
+                            <a href="#" class="btn-icon">
+                                <span class="icon-bg icon-cart"></span>
+                            </a>
+                            <a href="#" class="btn-icon">
+                                <span class="icon-bg icon-wishlist"></span>
+                            </a>
+                            <a href="#" class="btn-icon">
+                                <span class="icon-bg icon-compare"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bestseller single-space">
+        <div class="ecome-heading style5v3 spc5v3">
+            <h1>Similar Brand</h1>
+            <a href="#" class="btn-show">Shop more<i class="ion-ios-arrow-forward"></i></a>
+        </div>
+        <div class="owl-carousel owl-theme owl-cate v2 js-owl-cate">
+            <div class="product-item">
+                <div class="pd-bd product-inner">
+                    <div class="product-img">
+                        <a href="#"><img src="{% static 'img/product/sound.jpg' %}" alt="" class="img-reponsive"></a>
+                    </div>
+                    <div class="product-info">
+                        <div class="color-group">
+                        </div>
+                        <div class="element-list element-list-left">
+                        </div>
+                        <div class="element-list element-list-middle">
+                            <p class="product-cate">Audio Speakers</p>
+                            <h3 class="product-title"><a href="#">Cordless TrackMan Wheel</a></h3>
+                            <div class="product-bottom">
+                                <div class="product-price"><span>$1,215.00</span></div>
+                                <a href="#" class="btn-icon btn-view">
+                                    <span class="icon-bg icon-view"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-button-group">
+                            <a href="#" class="btn-icon">
+                                <span class="icon-bg icon-cart"></span>
+                            </a>
+                            <a href="#" class="btn-icon">
+                                <span class="icon-bg icon-wishlist"></span>
+                            </a>
+                            <a href="#" class="btn-icon">
+                                <span class="icon-bg icon-compare"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

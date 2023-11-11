@@ -1,0 +1,40 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+    <div class="single-product-detail product-bundle product-aff">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'category_list' %}">Category List</a></li>
+            <li class="active">Detail Category</li>
+        </ul>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="flex product-img-slide">
+                    <div class="product-images">
+                        <div class="main-img js-product-slider">
+                            <img src="{{category.image.url}}" alt="photo" class="img-reponsive">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="single-flex">
+                    <div class="single-product-info product-info product-grid-v2 s-50">
+                        <div class="product-price">Create Date:
+                            <span style="font-size: 18px;">{{category.created_at}}</span>
+                        </div>
+                        <div class="product-price">Title:
+                            <span style="font-size: 18px;">{{category.title}}</span>
+                        </div>
+                        <div class="availability">
+                            <p class="product-inventory"> <label>Block: </label><span> {{category.block}}</span></p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

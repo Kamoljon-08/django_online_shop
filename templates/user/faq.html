@@ -1,0 +1,33 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+    <div class="pd-banner v2">
+       <a href="#" class="image-bd effect_img2"><img src="{% static 'img/o-banner.jpg' %}" alt="" class="img-reponsive"></a> 
+    </div>
+    <ul class="breadcrumb">
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li class="active">FAQS</li>
+    </ul>
+    <div class="e-qa v2">
+        <div class="cmt-title v3 text-center abs"><h1 class="oval-bd btn-gradient">FAQs</h1></div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                {% for faq in faqs %}
+                <div class="qa-element">
+                    <div class="qa-quest">
+                        <span class="qa-icon">Q</span>
+                        <h3 style="max-width: 90%;">{{ faq.question }}</h3>
+                    </div>
+                    <div class="qa-answer">
+                        <span class="qa-icon">A</span>
+                        <p style="max-width: 90%;">{{ faq.answer }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

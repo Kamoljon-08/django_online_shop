@@ -1,0 +1,365 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>E-come | Multi-Purpose HTML Template for Electronics Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/png">
+
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/utils.css' %}">
+</head>
+
+<body>
+    <!-- push menu-->
+    <div class="pushmenu menu-home5">
+        <div class="menu-push">
+            <span class="close-left js-close"><i class="icon-close f-20"></i></span>
+            <div class="clearfix"></div>
+            <form role="search" method="get" id="searchform" class="searchform" action="/search">
+                <div>
+                    <label class="screen-reader-text" for="q">Searching...</label>
+                    <input type="text" placeholder="Search for products" value="" name="q" id="q" autocomplete="off">
+                    <button type="submit" id="searchsubmit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+            <div class="header-sub-element row"
+                style="display: flex; align-items: center; justify-content: center; gap: 35px; margin-top: 20px;">
+                {% if user.is_authenticated %}
+                <div class="level1">
+                    <a href="#">
+                        <i class="fa-solid fa-user" style="font-size: 25px; color: #a4a4a4"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            <ul class="nav-home5 js-menubar">
+                <li class="level1">
+                    <a href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="level1">
+                    <a href="{% url 'about_list' %}">Abouts</a>
+                </li>
+                <li class="level1">
+                    <a href="{% url 'blog_list' %}">Blogs</a>
+                </li>
+                <li class="level1">
+                    <a href="{% url 'faq_list' %}">Faqs</a>
+                </li>
+                <li class="level1">
+                    <a href="{% url 'user_list' %}">Users</a>
+                </li>
+                <li class="level1">
+                    <a href="{% url 'product_list' %}">Products</a>
+                </li>
+                <li class="level1">
+                    <a href="{% url 'category_list' %}">Categories</a>
+                </li>
+                <li class="level1">
+                    <a href="{% url 'ad_list' %}">Ads</a>
+                </li>
+                <li class="level1">
+                    <a href="{% url 'brand_list' %}">Brands</a>
+                </li>
+                <li class="level1">
+                    <a href="{% url 'sponsor_list' %}">Sponsors</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <header id="header" class="header-v3 bg-w">
+        <div class="header-center">
+            <div class="container container-240">
+                <div class="row flex">
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 v-center header-logo">
+                        <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt=""
+                                class="img-reponsive"></a>
+                    </div>
+                    <div class="col-lg-7 col-md-7 v-center header-search hidden-xs hidden-sm">
+                        <form method="#" class="searchform ajax-search" action="#" role="search">
+                            <input type="text" class="form-control" placeholder="i’m shoping for...">
+                            <ul class="list-product-search hidden-xs hidden-sm">
+                                <li>
+                                    <a class="flex align-center" href="">
+                                        <div class="product-img">
+                                            <img src="{% static 'img/product/iphonex.jpg' %}" alt="">
+                                        </div>
+                                        <h3 class="product-title">Notebook Black Spire Smartphone Black 2.0</h3>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="flex align-center" href="">
+                                        <div class="product-img">
+                                            <img src="{% static 'img/product/sound.jpg' %}" alt="">
+                                        </div>
+                                        <h3 class="product-title">Smartphone 6S 64GB LTE</h3>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="flex align-center" href="">
+                                        <div class="product-img">
+                                            <img src="{% static 'img/product/phone4.jpg' %}" alt="">
+                                        </div>
+                                        <h3 class="product-title">Notebook Black Spire Smartphone Black 2.0</h3>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="flex align-center" href="">
+                                        <div class="product-img">
+                                            <img src="{% static 'img/product/phone5.jpg' %}" alt="">
+                                        </div>
+                                        <h3 class="product-title">Smartphone 6S 64GB LTE </h3>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="flex align-center" href="">
+                                        <div class="product-img">
+                                            <img src="{% static 'img/product/phone1.jpg' %}" alt="">
+                                        </div>
+                                        <h3 class="product-title">Notebook Black Spire Smartphone Black 2.0</h3>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="search-panel">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href='#'>All categories
+                                    <span class="fa fa-caret-down"></span></a>
+                                <ul id="category" class="dropdown-menu dropdown-category">
+                                    <li><a href="#">TV & Video</a></li>
+                                    <li><a href="#">Home Audio & Theater</a></li>
+                                    <li><a href="#">Camera, Photo & Video</a></li>
+                                    <li><a href="#">Cell Phones & Accessories</a></li>
+                                    <li><a href="#">Headphones</a></li>
+                                    <li><a href="#">Car Electronics</a></li>
+                                    <li><a href="#">Electronics Showcase</a></li>
+                                </ul>
+                            </div>
+                            <span class="input-group-btn">
+                                <button class="button_search" type="button"><i
+                                        class="ion-ios-search-strong"></i></button>
+                            </span>
+                        </form>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 v-center header-sub">
+                        <div class="right-panel">
+                            <div class="header-sub-element hidden-xs hidden-sm">
+                                <div class="sub-left">
+                                    <img src="{% static 'img/icon-call.png' %}" alt="">
+                                </div>
+                                <div class="sub-right">
+                                    <span>Call Us Free</span>
+                                    <div class="phone">
+                                        +998 91 166 21 25
+                                        +998 98 111 61 72
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="header-sub-element row" style="display: flex; align-items: center; gap: 5px;">
+                                {% if user.is_authenticated %}
+
+                                <a class="hidden-xs hidden-sm" href="#">
+                                    <i class="fa-regular fa-user" style="font-size: 25px;"></i>
+                                </a>
+
+                                <a class="hidden-xs hidden-sm" title="Log Out" href="{% url 'logout' %}">
+                                    <i class="fa-solid fa-right-from-bracket" style="font-size: 25px;"></i>
+                                </a>
+
+                                {% else %}
+                                <a href="{% url 'login' %}" style="padding-right: 0px;">
+                                    <button type="submit" class="btn btn-submit btn-gradient" style="width: 100%;">
+                                        Login
+                                    </button>
+                                </a>
+                                {% endif %}
+                                <a href="#" class="hidden-md hidden-lg icon-pushmenu js-push-menu">
+                                    <i class="fa-solid fa-bars" style="font-size: 25px;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom hidden-xs hidden-sm">
+            <div class="container container-240">
+                <div class="row flex lr2">
+                    <div class="col-lg-12 widget-left">
+                        <div class="flex lr">
+                            <nav class="main-menu flex align-center">
+                                <div class="collapse navbar-collapse">
+                                    <ul class="nav navbar-nav">
+                                        <li class="level1">
+                                            <a href="{% url 'index' %}">Home</a>
+                                        </li>
+                                        <li class="level1">
+                                            <a href="{% url 'about_list' %}">Abouts</a>
+                                        </li>
+                                        <li class="level1">
+                                            <a href="{% url 'blog_list' %}">Blogs</a>
+                                        </li>
+                                        <li class="level1">
+                                            <a href="{% url 'faq_list' %}">Faqs</a>
+                                        </li>
+                                        <li class="level1">
+                                            <a href="{% url 'user_list' %}">Users</a>
+                                        </li>
+                                        <li class="level1">
+                                            <a href="{% url 'product_list' %}">Products</a>
+                                        </li>
+                                        <li class="level1">
+                                            <a href="{% url 'category_list' %}">Categories</a>
+                                        </li>
+                                        <li class="level1">
+                                            <a href="{% url 'ad_list' %}">Ads</a>
+                                        </li>
+                                        <li class="level1">
+                                            <a href="{% url 'brand_list' %}">Brands</a>
+                                        </li>
+                                        <li class="level1">
+                                            <a href="{% url 'sponsor_list' %}">Sponsors</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% block content %}
+
+    {% endblock %}
+
+    <footer>
+        <div class="f-top v2">
+            <div class="container container-240">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                        <div class="footer-block footer-about">
+                            <div class="f-logo">
+                                <a href="#"><img src="{% static 'img/logo.png' %}" alt="" class="img-reponsive"></a>
+                            </div>
+                            <ul class="footer-block-content">
+                                <li class="address">
+                                    <span>45 Grand Central Terminal New York,NY 1017 United State USA</span>
+                                </li>
+                                <li class="phone">
+                                    <span>
+                                        +998 91 166 21 25
+                                    </span>
+                                </li>
+                                <li class="email">
+                                    <span>mirabzalozodov07@gmail.com</span>
+                                </li>
+                                <li class="time">
+                                    <span>Mon-Sat 6:00 Am - 23:00 Pm</span>
+                                </li>
+                            </ul>
+                            <div class="footer-social social">
+                                <h3 class="footer-block-title">Follow us</h3>
+                                <a href="#" class="fa fa-twitter"></a>
+                                <a href="#" class="fa fa-dribbble"></a>
+                                <a href="#" class="fa fa-behance"></a>
+                                <a href="#" class="fa fa-instagram"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                        <div class="footer-block">
+                            <h3 class="footer-block-title">Quick menu</h3>
+                            <ul class="footer-block-content">
+                                <li><a href="#">TV & Video</a></li>
+                                <li><a href="#">Home Audio & Theater</a></li>
+                                <li><a href="#">Camera, Photo & Video</a></li>
+                                <li><a href="#">Cell Phones & Accessories</a></li>
+                                <li><a href="#">Headphones</a></li>
+                                <li><a href="#">Video Games</a></li>
+                                <li><a href="#">Bluetooth & Wireless Speakers</a></li>
+                                <li><a href="#">Car Electronics</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                        <div class="footer-block">
+                            <h3 class="footer-block-title">Customer Service</h3>
+                            <ul class="footer-block-content">
+                                <li><a href="#">My Account</a></li>
+                                <li><a href="#">Track your Order</a></li>
+                                <li><a href="#">Returns/Exchange</a></li>
+                                <li><a href="#">FAQs</a></li>
+                                <li><a href="#">Customer Service</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        <div class="footer-block">
+                            <div class="footer-block-phone">
+                                <h3 class="footer-block-title">Hot Line</h3>
+                                <p class="phone-desc">Call Us toll Free</p>
+                                <p class="phone-light">
+                                    +998 91 166 21 25
+                                </p>
+                            </div>
+                            <div class="footer-block-newsletter">
+                                <h3 class="footer-block-title">Subscription</h3>
+                                <p>Register now to get updates on promotions and coupons.</p>
+                                <form class="form_newsletter" action="#" method="post">
+                                    <input type="email" value="" placeholder="Enter your emaill adress" name="EMAIL"
+                                        id="mail" class="newsletter-input form-control">
+                                    <button id="subscribe" class="button_mini btn btn-gradient" type="submit">
+                                        Subscribe
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="f-bottom">
+            <div class="container container-240">
+                <div class="row flex lr">
+                    <div class="col-xs-6 f-copyright"><span>© 2023 EngoTheme. All rights reserved.</span></div>
+                    <div class="col-xs-6 f-payment hidden-xs">
+                        <a href="#"><img src="{% static 'img/payment/mastercard.png' %}" alt=""
+                                class="img-reponsive"></a>
+                        <a href="#"><img src="{% static 'img/payment/paypal.png' %}" alt="" class="img-reponsive"></a>
+                        <a href="#"><img src="{% static 'img/payment/visa.png' %}" alt="" class="img-reponsive"></a>
+                        <a href="#"><img src="{% static 'img/payment/american-express.png' %}" alt=""
+                                class="img-reponsive"></a>
+                        <a href="#"><img src="{% static 'img/payment/western-union.png' %}" alt=""
+                                class="img-reponsive"></a>
+                        <a href="#"><img src="{% static 'img/payment/jcb.png' %}" alt="" class="img-reponsive"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <a href="#" class="btn-gradient scroll_top"><i class="ion-ios-arrow-up"></i></a>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/slick.js' %}"></script>
+    <script src="{% static 'js/countdown.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/utils.js' %}"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMfhtZN7ZukEAEQcgR_GszRE4x338Bu9M&callback=initMap">
+        </script>
+</body>
+
+</html>

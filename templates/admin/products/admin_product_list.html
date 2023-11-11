@@ -1,0 +1,184 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+    <div class="team">
+        <div style="display: flex; align-items: center; margin-top: 30px;">
+            <div class="col-lg-10 col-md-10 v-center header-search hidden-xs" style="padding: 0;">
+                <form name="selected" method="POST">{% csrf_token %}
+                    <input type="search" class="form-control" style="width: 100%;" placeholder="Searching user...">
+                    <div class="search-panel" style="width: 260px;">
+                        <select id="category" class="dropdown-category" style="margin: 0 10px 0 0; padding: 10px 5px;">
+                            <option value="first_name">First Name</option>
+                            <option value="last_name">Last Name</option>
+                            <option value="username">Username</option>
+                            <option value="email">Email Address</option>
+                            <option value="phone">Phone</option>
+                        </select>
+                    </div>
+                    <span class="input-group-btn">
+                        <button type="submit" class="button_search" type="button"><i
+                                class="ion-ios-search-strong"></i></button>
+                    </span>
+                </form>
+            </div>
+            <div class="col-lg-2 col-md-2 v-center">
+                <a href="{% url 'product_create' %}">
+                    <button class="btn btn-submit btn-gradient" style="font-size: 20px; height: 62px;">
+                        <i class="fa-solid fa-plus" style="font-size: 20px; margin-right: 10px;"></i>Create Product
+                    </button>
+                </a>
+            </div>
+        </div>
+        <h1 class="about-title v3 spc text-center">Products / {{products|length}}</h1>
+        <div class="releases v2" style="padding-top: 0;">
+            <div class="tab-content">
+                <div id="tv2" class="tab-pane fade in active">
+                    <div class="js-multiple-row3">
+                        {% for product in products %}
+                        <div class="product-item" style="padding: 30px;">
+                            <div class="pd-bd product-inner">
+                                <div class="product-img">
+                                    <a href="{% url 'product_detail' product.item.id %}">
+                                        <div class="flex product-img-slide">
+                                            <div class="product-images">
+                                                <div class="main-img js-product-slider">
+                                                    {% for product_image in product.images %}
+                                                    {% if product_image.product.pk == product.item.pk %}
+                                                    {% if product_image.image.url|slice:"-3:" != "mp4" %}
+                                                    <img src="{{product_image.image.url}}" alt="photo" height="250px"
+                                                        class="img-reponsive">
+                                                    {% else %}
+                                                    <video controls height="250px">
+                                                        <source src="{{product_image.image.url}}"
+                                                            class="img-reponsive" />
+                                                    </video>
+                                                    {% endif %}
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="multiple-img-list-ver2 js-click-product">
+                                                {% for product_image in product.images %}
+                                                {% if product_image.product.pk == product.item.pk %}
+                                                <div class="product-col">
+                                                    <div class="imgs">
+                                                        {% if product_image.image.url|slice:"-3:" != "mp4" %}
+                                                        <img src="{{product_image.image.url}}" alt="photo" height="50px"
+                                                            width="100px">
+                                                        {% else %}
+                                                        <video controls muted height="50px" width="100px"
+                                                            class="img-reponsive">
+                                                            <source src="{{product_image.image.url}}" />
+                                                        </video>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </a>
+                                    {% if product.item.block %}
+                                    <div class="ribbon-price red"><span>{{product.item.block}}</span></div>
+                                    {% else %}
+                                    <div class="ribbon-price" style="background: yellowgreen !important;">
+                                        <span>{{product.item.block}}</span>
+                                    </div>
+                                    {% endif %}
+                                    {% if product.item.discount > 0 %}
+                                    <div class="ribbon-price"
+                                        style="float: left; position: absolute; top: -55px; left: -55px; background: linear-gradient(122deg, #c26af5, #54f0ff);">
+                                        <span>{{product.item.discount}} %</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="product-info">
+                                    <div class="color-group"></div>
+                                    <div class="element-list element-list-middle">
+                                        <div class="bd-rating" style="display: flex; justify-content: center;">
+                                            {% for x in product.stars %}
+                                            <a href="{% url 'product_rating_create' pk=product.item.id count=x.1 %}">
+                                                {% if x.0 == 'fill' %}
+                                                <i class="fa-solid fa-star" style="color: gold;"></i>
+                                                {% else %}
+                                                <i class="fa-regular fa-star"></i>
+                                                {% endif %}
+                                            </a>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="number-rating" style="text-align: center;">({{product.reviews}})
+                                            reviews</div>
+                                        <p class="product-cate">{{product.item.category}}</p>
+                                        <h3 class="product-title">
+                                            <a
+                                                href="{% url 'product_detail' product.item.id %}">{{product.item.title}}</a>
+                                        </h3>
+                                        <div class="product-bottom">
+                                            <div class="product-price">
+                                                {% if product.item.discount > 0 %}
+                                                <span class="red">$ {{product.item.sale_price}}</span>
+                                                <span class="old">$ {{product.item.price}}</span>
+                                                {% else %}
+                                                <span>$ {{product.item.price}}</span>
+                                                {% endif %}
+                                                <p class="product-dect" style="text-transform: capitalize;">
+                                                    {{product.item.description|slice:":50"}}...</p>
+                                            </div>
+                                            <a href="#" class="btn-icon btn-view">
+                                                <span class="icon-bg icon-view"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="flex" style="gap: 10px;">
+                                        <a href="{% url 'product_image_create' product.item.id %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 12px;">
+                                                <i class="fa-solid fa-plus"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Img Create
+                                            </button>
+                                        </a>
+                                        <a href="{% url 'product_update' product.item.id %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-pen-to-square"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Edit
+                                            </button>
+                                        </a>
+                                        <a href="{% url 'product_delete' product.item.id %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-trash-can"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Delete
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="product-button-group">
+                                        <a href="{% url 'basket_create' product.item.pk %}" class="btn-icon">
+                                            <span class="icon-bg icon-cart"></span>
+                                        </a>
+                                        {% if product.likes %}
+                                        <a href="{% url 'product_like_delete' product.item.pk %}" class="btn-icon">
+                                            <i class="fa-solid fa-heart" style="color: #fa0000; font-size: 20px;"></i>
+                                        </a>
+                                        {% else %}
+                                        <a href="{% url 'product_like_create' product.item.pk %}" class="btn-icon">
+                                            <i class="icon-bg icon-wishlist"></i>
+                                        </a>
+                                        {% endif %}
+                                        <a href="#" class="btn-icon">
+                                            <span class="icon-bg icon-compare"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

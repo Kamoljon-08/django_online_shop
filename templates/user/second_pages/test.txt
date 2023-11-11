@@ -1,0 +1,5 @@
+ <!-- <div class="level1">
+                    <a href="{% url 'logout' %}">
+                        <i class="fa-solid fa-right-from-bracket" style="font-size: 25px; color: #a4a4a4"></i>
+                    </a> 
+                </div>                          -->

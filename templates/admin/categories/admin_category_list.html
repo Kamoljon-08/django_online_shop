@@ -1,0 +1,91 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+    <div class="team">
+        <div style="display: flex; align-items: center; margin-top: 30px;">
+            <div class="col-lg-10 col-md-10 v-center header-search hidden-xs" style="padding: 0;">
+                <form name="selected" method="POST">{% csrf_token %}
+                    <input type="search" class="form-control" style="width: 100%;" placeholder="Searching user...">
+                    <div class="search-panel" style="width: 260px;">
+                        <select id="category" class="dropdown-category" style="margin: 0 10px 0 0; padding: 10px 5px;">
+                            <option value="first_name">First Name</option>
+                            <option value="last_name">Last Name</option>
+                            <option value="username">Username</option>
+                            <option value="email">Email Address</option>
+                            <option value="phone">Phone</option>
+                        </select>
+                    </div>
+                    <span class="input-group-btn">
+                        <button type="submit" class="button_search" type="button"><i
+                                class="ion-ios-search-strong"></i></button>
+                    </span>
+                </form>
+            </div>
+            <div class="col-lg-2 col-md-2 v-center">
+                <a href="{% url 'category_create' %}">
+                    <button class="btn btn-submit btn-gradient" style="font-size: 20px; height: 62px;">
+                        <i class="fa-solid fa-plus" style="font-size: 20px; margin-right: 10px;"></i>Create Category
+                    </button>
+                </a>
+            </div>
+        </div>
+        <h1 class="about-title v3 spc text-center">Categories / {{categories|length}}</h1>
+        <div class="releases v2" style="padding-top: 0;">
+            <div class="tab-content">
+                <div id="tv2" class="tab-pane fade in active">
+                    <div class="js-multiple-row2">
+                        {% for category in categories %}
+                        <div class="product-item">
+                            <div class="pd-bd product-inner">
+                                <div class="product-img">
+                                    <a href="{% url 'category_detail' category.pk %}">
+                                        {% if category.image %}
+                                            <img src="{{category.image.url}}" alt="" width="225px" height="225px" class="img-reponsive" style="margin:  0 auto;">
+                                        {% endif %}
+                                    </a>
+                                    {% if category.block %}
+                                    <div class="ribbon-price red"><span>{{category.block}}</span></div>
+                                    {% else %}
+                                    <div class="ribbon-price" style="background: yellowgreen !important;">
+                                        <span>{{category.block}}</span></div>
+                                    {% endif %}
+                                </div>
+                                <div class="product-info">
+                                    <div class="color-group"></div>
+                                    <div class="element-list element-list-middle">
+                                        <h3 class="product-title">
+                                            <a href="{% url 'category_detail' category.pk %}">
+                                                {{category.title}}
+                                            </a>
+                                        </h3>
+                                    </div>
+                                    <div class="flex" style="gap: 10px;">
+                                        <a href="{% url 'category_update' category.pk %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-pen-to-square"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Edit
+                                            </button>
+                                        </a>
+
+                                        <a href="{% url 'category_delete' category.pk %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-trash-can"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Delete
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

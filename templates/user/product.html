@@ -1,0 +1,272 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="wrappage">
+    <!--content-->
+    <div class="container container-240 shop-collection">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li class="active">Shop</li>
+        </ul>
+        <div class="filter-collection-left hidden-lg hidden-md">
+            <a class="btn">Filter</a>
+        </div>
+        <div class="row shop-colect">
+            <div class="col-md-3 col-sm-3 col-xs-12 col-left collection-sidebar" id="filter-sidebar">
+                <div class="close-sidebar-collection hidden-lg hidden-md">
+                    <span>filter</span><i class="icon_close ion-close"></i>
+                </div>
+                <div class="filter filter-cate">
+                    <ul class="wiget-content v2" style="height: 460px; overflow-y: scroll;">
+                        {% for item in prod_categories %}
+                        <li class="active">
+                            <a href="{% url 'product_filter_category' item.category.title %}">{{item.category.title}}
+                                <span class="number">
+                                    ({{item.count}})
+                                </span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="filter filter-group">
+                    <h1 class="widget-blog-title">Product filter</h1>
+                    <div class="filter-price filter-inside">
+                        <h3>Price</h3>
+                        <div class="filter-content">
+                            <div class="price-range-holder">
+                                <form action="/product/filter/price/" method="post">
+                                    {% csrf_token %}
+                                    {% for field in form %}
+                                        {{ field }}
+                                    {% if field.errors %}
+                                    <small>{{ field.errors|striptags }}</small>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <input
+                                    class="btn-filter e-gradient"
+                                    type="submit" value="filter" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-brand filter-inside">
+                        <h3>Brands</h3>
+                        <ul class="e-filter brand-filter" style="height: 400px; overflow-y: scroll;">
+                            {% for item in brands %}
+                            <li><a href="{% url 'product_filter_brand' item.brand.title %}">{{item.brand.title}} <span
+                                        class="number">({{item.count}})</span></a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- <div class="filter-color filter-brand filter-inside">
+                        <h3>Color</h3>
+                        <ul class="e-filter brand-filter">
+                            <li><a href="#">Black <span class="number">(80)</span></a></li>
+                            <li><a href="#">Black Leather <span class="number">(80)</span></a></li>
+                            <li class="active-filter"><a href="#">Black with Red <span class="number">(80)</span></a>
+                            </li>
+                            <li><a href="#">Gold <span class="number">(80)</span></a></li>
+                            <li><a href="#">Spacegrey <span class="number">(80)</span></a></li>
+                        </ul>
+                        <a href="#" class="btn-showmore">Show more +</a>
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12 collection-list">
+                <div class="e-product">
+                    <div class="pd-top">
+                        <h1 class="title">Shop</h1>
+                        <div class="show-element"><span>Showing 1–15 of 20 results</span></div>
+                    </div>
+                    <div class="pd-middle">
+                        <div class="view-mode view-group">
+                            <a class="grid-icon col active"><img src="{% static 'img/grid.png' %}" alt=""></a>
+                            <a class="grid-icon col2"><img src="{% static 'img/grid2.png' %}" alt=""></a>
+                            <a class="list-icon list"><img src="{% static 'img/list.png' %}" alt=""></a>
+                        </div>
+                        <div class="pd-sort">
+                            <div class="filter-sort">
+                                <div class="dropdown">
+                                    <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="dropdown-label">Default sorting</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="title-ascending">Alphabetically, A-Z</a></li>
+                                        <li><a href="title-descending">Alphabetically, Z-A</a></li>
+                                        <li><a href="price-descending">Price, high to low</a></li>
+                                        <li><a href="price-ascending">Price, low to high</a></li>
+                                        <li><a href="created-ascending">Date, old to new</a></li>
+                                        <li><a href="created-descending">Date, new to old</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="filter-show">
+                                <div class="dropdown">
+                                    <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        Show
+                                        <span class="dropdown-label">12</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">6</a></li>
+                                        <li><a href="#">12</a></li>
+                                        <li><a href="#">24</a></li>
+                                        <li><a href="#">36</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-collection-grid product-grid">
+                        <div class="row">
+                            {% for prod in products %}
+                            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 product-item">
+                                <div class="pd-bd product-inner">
+                                    <div class="product-img">
+                                        <a class="js-single-post">
+                                            {% for image in prod.images %}
+                                            {% if image.product.pk == prod.item.pk %}
+                                            {% if image.image.url|slice:"-3:" != "mp4" %}
+                                            <img src="{{image.image.url}}" style="height: 180px; width: 100%;" alt=""
+                                                class="img-reponsive">
+                                            {% endif %}
+                                            {% endif %}
+                                            {% endfor %}
+                                        </a>
+                                        {% if prod.item.discount > 0 %}
+
+                                        <div class="ribbon-price red">
+                                            <span>-{{prod.item.discount}}%</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="element-list element-list-middle">
+                                            <div class="bd-rating" style="text-align: center;">
+                                                {% for x in prod.stars %}
+                                                <a href="{% url 'product_rating_create' pk=prod.item.id count=x.1 %}">
+                                                    {% if x.0 == 'fill' %}
+                                                    <i class="fa-solid fa-star" style="color: gold;"></i>
+                                                    {% else %}
+                                                    <i class="fa-regular fa-star"></i>
+                                                    {% endif %}
+                                                </a>
+                                                {% endfor %}
+                                                <div class="number-rating" style="text-align: center;">
+                                                    ({{prod.reviews}}) reviews</div>
+                                            </div>
+                                            <p class="product-cate">{{prod.item.brand}}</p>
+                                            <h3 class="product-title">
+                                                <a href="#">
+                                                    {% if prod.item.title|length > 25 %}
+                                                    {{prod.item.title|slice:":25"}}...
+                                                    {% else %}
+                                                    {{prod.item.title}}
+                                                    {% endif %}
+                                                </a>
+                                            </h3>
+                                            <div class="product-bottom">
+                                                <div class="product-price">
+                                                    {% if prod.item.discount > 0 %}
+                                                    <span class="red">$ {{prod.item.sale_price}}</span>
+                                                    <span class="old">$ {{prod.item.price}}</span>
+                                                    {% else %}
+                                                    <span>$ {{prod.item.price}}</span>
+                                                    {% endif %}
+                                                </div>
+                                                <a href="#" class="btn-icon btn-view">
+                                                    <span class="icon-bg icon-view"></span>
+                                                </a>
+                                            </div>
+                                            <div class="product-bottom-group">
+                                                <a href="#" class="btn-icon">
+                                                    <span class="icon-bg icon-cart"></span>
+                                                </a>
+                                                {% if prod.likes %}
+                                                <a href="{% url 'product_like_delete' prod.item.pk %}" class="btn-icon">
+                                                    <i class="fa-solid fa-heart"
+                                                        style="color: #fa0000; font-size: 20px;"></i>
+                                                </a>
+                                                {% else %}
+                                                <a href="{% url 'product_like_create' prod.item.pk %}" class="btn-icon">
+
+                                                    <i class="icon-bg icon-wishlist"></i>
+                                                </a>
+                                                {% endif %}
+                                                <a href="#" class="btn-icon">
+                                                    <span class="icon-bg icon-compare"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="product-button-group">
+                                            <a href="#" class="btn-icon">
+                                                <span class="icon-bg icon-cart"></span>
+                                            </a>
+                                            {% if product.likes %}
+                                            <a href="{% url 'product_like_delete' prod.item.pk %}" class="btn-icon">
+                                                <i class="fa-solid fa-heart"
+                                                    style="color: #fa0000; font-size: 20px;"></i>
+                                            </a>
+                                            {% else %}
+                                            <a href="{% url 'product_like_create' prod.item.pk %}" class="btn-icon">
+                                                <i class="icon-bg icon-wishlist"></i>
+                                            </a>
+                                            {% endif %}
+                                            <a href="#" class="btn-icon">
+                                                <span class="icon-bg icon-compare"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="pd-middle space-v1">
+                        <ul class="pagination">
+                            <li class="active"><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#"><i class="ion-ios-arrow-forward"></i></a></li>
+                        </ul>
+                        <div class="pd-sort">
+                            <div class="filter-sort">
+                                <div class="dropdown">
+                                    <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="dropdown-label">Default sorting</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="manual">Featured</a></li>
+                                        <li><a href="best-selling">Best Selling</a></li>
+                                        <li><a href="title-ascending">Alphabetically, A-Z</a></li>
+                                        <li><a href="title-descending">Alphabetically, A-Z</a></li>
+                                        <li><a href="price-descending">Price, high to low</a></li>
+                                        <li><a href="price-ascending">Price, low to high</a></li>
+                                        <li><a href="created-ascending">Date, old to new</a></li>
+                                        <li><a href="created-descending">Date, new to old</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="filter-show">
+                                <div class="dropdown">
+                                    <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        Show
+
+                                        <span class="dropdown-label">12</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">12</a></li>
+                                        <li><a href="#">24</a></li>
+                                        <li><a href="#">36</a></li>
+                                        <li><a href="#">48</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

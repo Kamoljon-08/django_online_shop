@@ -1,0 +1,190 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+    <div class="team">
+        <div style="display: flex; align-items: center; margin-top: 30px;">
+            <div class="col-lg-10 col-md-10 v-center header-search hidden-xs" style="padding: 0;">
+                <form name="q" method="get">{% csrf_token %}
+                    <input type="search" class="form-control" style="width: 100%;" placeholder="Searching user...">
+                    <div class="search-panel" style="width: 260px;">
+                        <select id="category" class="dropdown-category" style="margin: 0 10px 0 0; padding: 10px 5px;">
+                            <option value="first_name">First Name</option>
+                            <option value="last_name">Last Name</option>
+                            <option value="username">Username</option>
+                            <option value="email">Email Address</option>
+                            <option value="phone">Phone</option>
+                        </select>
+                    </div>
+                    <span class="input-group-btn">
+                        <button type="submit" class="button_search" type="button"><i
+                                class="ion-ios-search-strong"></i></button>
+                    </span>
+                </form>
+            </div>
+            <div class="col-lg-2 col-md-2 v-center">
+                <a href="{% url 'file_create' %}">
+                    <button class="btn btn-submit btn-gradient" style="font-size: 20px; height: 62px;">
+                        <i class="fa-solid fa-plus" style="font-size: 20px; margin-right: 10px;"></i>Company File</button>
+                </a>
+            </div>
+        </div>
+        <h1 class="about-title v3 spc text-center">Company Files / {{files|length}}</h1>
+        <div class="releases v2" style="padding-top: 0;">
+            <div class="tab-content">
+                <div id="tv2" class="tab-pane fade in active">
+                    <div class="js-multiple-row2">
+                        {% for file in files %}
+                        <div class="product-item">
+                            <div class="pd-bd product-inner">
+                                <div class="product-img">
+                                    <a href="{% url 'file_detail' file.pk %}">
+                                        {% if file.image %}
+                                            {% if file.image.url|slice:"-3:" != "mp4" %}
+                                                <img src="{{file.image.url}}" alt="" width="225px" height="225px" class="img-reponsive" style="margin:  0 auto;">
+                                            {% else %}
+                                                <video controls muted  width="100%" height="225px" style="margin: 0 auto;">
+                                                    <source src="{{file.image.url}}" type="video/mp4" />
+                                                </video>
+                                            {% endif %}
+                                        {% endif %}
+                                    </a>
+                                    {% if file.block %}
+                                    <div class="ribbon-price red"><span>{{file.block}}</span></div>
+                                    {% else %}
+                                    <div class="ribbon-price" style="background: yellowgreen !important;">
+                                        <span>{{file.block}}</span></div>
+                                    {% endif %}
+                                </div>
+                                <div class="product-info">
+                                    <div class="color-group"></div>
+                                    <div class="element-list element-list-middle">
+                                        <h3 class="product-title">
+                                            <a href="{% url 'file_detail' file.pk %}">
+                                                {{file.title}}
+                                            </a>
+                                        </h3>
+                                        <h3 class="product-title">
+                                            <a href="{% url 'file_detail' file.pk %}"></a>
+                                        </h3>
+                                        <div class="product-bottom">
+                                            <div class="product-price"><span>{{file.phone}}</span></div>
+                                            <a href="{% url 'file_detail' file.pk %}" class="btn-icon btn-view">
+                                                <span class="icon-bg icon-view"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="flex" style="gap: 10px;">
+                                        <a href="{% url 'file_update' file.pk %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-pen-to-square"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Edit
+                                            </button>
+                                        </a>
+
+                                        <a href="{% url 'file_delete' file.pk %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-trash-can"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Delete
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="display: flex; align-items: center; margin-top: 30px;">
+            <div class="col-lg-10 col-md-10 v-center header-search hidden-xs" style="padding: 0;">
+                <form name="q" method="get">{% csrf_token %}
+                    <input type="search" class="form-control" style="width: 100%;" placeholder="Searching user...">
+                    <div class="search-panel" style="width: 260px;">
+                        <select id="category" class="dropdown-category" style="margin: 0 10px 0 0; padding: 10px 5px;">
+                            <option value="first_name">First Name</option>
+                            <option value="last_name">Last Name</option>
+                            <option value="username">Username</option>
+                            <option value="email">Email Address</option>
+                            <option value="phone">Phone</option>
+                        </select>
+                    </div>
+                    <span class="input-group-btn">
+                        <button type="submit" class="button_search" type="button"><i
+                                class="ion-ios-search-strong"></i></button>
+                    </span>
+                </form>
+            </div>
+            <div class="col-lg-2 col-md-2 v-center">
+                <a href="{% url 'member_create' %}">
+                    <button class="btn btn-submit btn-gradient" style="font-size: 20px; height: 62px;">
+                        <i class="fa-solid fa-plus" style="font-size: 20px; margin-right: 10px;"></i>Company Members</button>
+                </a>
+            </div>
+        </div>
+        <h1 class="about-title v3 spc text-center">Company Members / {{members|length}}</h1>
+        <div class="releases v2" style="padding-top: 0;">
+            <div class="tab-content">
+                <div id="tv2" class="tab-pane fade in active">
+                    <div class="js-multiple-row2">
+                        {% for member in members %}
+                        <div class="product-item">
+                            <div class="pd-bd product-inner">
+                                <div class="product-img">
+                                    <a href="{% url 'member_detail' member.pk %}">
+                                        <img src="{{member.image.url}}" alt="" width="225px" height="225px" class="img-reponsive" style="margin:  0 auto;">   
+                                    </a>
+                                    {% if member.block %}
+                                    <div class="ribbon-price red"><span>{{member.block}}</span></div>
+                                    {% else %}
+                                    <div class="ribbon-price" style="background: yellowgreen !important;">
+                                        <span>{{member.block}}</span></div>
+                                    {% endif %}
+                                </div>
+                                <div class="product-info">
+                                    <div class="color-group"></div>
+                                    <div class="element-list element-list-middle">
+                                        <h3 class="product-title">
+                                            <a href="{% url 'member_detail' member.pk %}">{{member.first_name}} {{member.last_name}}</a>
+                                        </h3>
+                                        <div class="product-bottom">
+                                            <div class="product-cate"><span>{{member.phone}}</span></div>
+                                            <a href="{% url 'member_detail' member.pk %}" class="btn-icon btn-view">
+                                                <span class="icon-bg icon-view"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="flex" style="gap: 10px;">
+                                        <a href="{% url 'member_update' member.pk %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-pen-to-square"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Edit
+                                            </button>
+                                        </a>
+
+                                        <a href="{% url 'member_delete' member.pk %}" style="width: 100%;">
+                                            <button class="btn btn-submit btn-gradient"
+                                                style="width: 100%; padding: 8px; margin: 10px 0; font-size: 14px;">
+                                                <i class="fa-solid fa-trash-can"
+                                                    style="font-size: 14px; margin-right: 10px;"></i>Delete
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

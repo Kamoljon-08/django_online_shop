@@ -1,0 +1,43 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-240">
+    <div class="myaccount">
+        <ul class="breadcrumb v3">
+            <li><a href="{% url 'product_list' %}">Product List</a></li>
+            <li class="active">Create Product's Color</li>
+        </ul>
+        <div class="row pd">
+            <div class="account-element bd-7" style="margin: 0 auto;">
+                <div class="cmt-title text-center abs">
+                    <h1 class="page-title" style="padding: 10px 20px ;">Create Product's Color</h1>
+                </div>
+                <div class="page-content">
+                    <form class="login-form" method="post" action="">{%csrf_token %}
+                        <div class="form-group">
+                            {% for field in form %}
+                            <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                            <p style="margin: 0;">
+                                {{field}}
+                            </p>
+                            {% if field.errors %}
+                            <p>{{ field.errors|striptags }}</p>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="flex" style="gap: 10px;">
+                            <a href="{% url 'product_list' %}" class="btn btn-submit btn-gradient" style="padding: 0 24px;">
+                                <i class="fa-solid fa-left-long"></i> Go Back
+                            </a>
+                            <button type="submit" class="btn btn-submit btn-gradient" style="width: 100%;">
+                                Create Product's Color
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
